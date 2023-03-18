@@ -11,6 +11,7 @@
   <ItemGroup>
     <Folder Include="Model\" />
     <Folder Include="Presenter\" />
+    <Folder Include="View\Tools\" />
   </ItemGroup>
 
 </Project>
