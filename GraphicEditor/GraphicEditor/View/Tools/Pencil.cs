@@ -35,9 +35,5 @@ namespace GraphicEditor.View.Tools
 
             previousPoint = point;
         }
-
-        public void FinishDrawing(int x, int y, Image image)
-        {
-        }
     }
 }

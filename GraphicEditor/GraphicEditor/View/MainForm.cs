@@ -50,9 +50,13 @@ namespace GraphicEditor.View
         {
             base.OnLoad(e);
 
-            activeTool = new Pencil { ForegroundColor = Color.RebeccaPurple, Thickness = 3 };
+            activeTool = new Line { ForegroundColor = Color.RebeccaPurple, Thickness = 7 };
             imageSizeInfoLabel.Text = $"Size: {drawingArea.Width} x {drawingArea.Height}";
             ActiveImage = new Bitmap(Width, Height);
+            using (var graphics = Graphics.FromImage(ActiveImage))
+            {
+                graphics.Clear(Color.White);
+            }
 
             drawingHistory = new History<Image>(ActiveImage.Clone() as Image);
         }

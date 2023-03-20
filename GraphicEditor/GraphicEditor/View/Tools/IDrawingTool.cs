@@ -15,6 +15,5 @@ namespace GraphicEditor.View.Tools
 
         public void StartDrawing(int x, int y, Image image);
         public void Draw(int x, int y, Image image);
-        public void FinishDrawing(int x, int y, Image image);
     }
 }
