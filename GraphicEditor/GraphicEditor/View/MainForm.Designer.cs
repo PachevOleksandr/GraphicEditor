@@ -54,7 +54,9 @@
             drawingArea.TabIndex = 0;
             drawingArea.TabStop = false;
             drawingArea.SizeChanged += drawingArea_SizeChanged;
+            drawingArea.MouseDown += drawingArea_MouseDown;
             drawingArea.MouseMove += drawingArea_MouseMove;
+            drawingArea.MouseUp += drawingArea_MouseUp;
             // 
             // toolStrip
             // 
@@ -158,6 +160,7 @@
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
             Text = "MainForm";
+            KeyDown += MainForm_KeyDown;
             ((System.ComponentModel.ISupportInitialize)drawingArea).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
