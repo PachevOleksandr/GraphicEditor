@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            drawingArea = new PictureBox();
             toolStrip = new ToolStrip();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
@@ -40,23 +39,10 @@
             infoPanel = new TableLayoutPanel();
             imageSizeInfoLabel = new Label();
             mousePositionLabel = new Label();
-            ((System.ComponentModel.ISupportInitialize)drawingArea).BeginInit();
+            resizablePanel = new Controls.ResizablePanel();
             menuStrip1.SuspendLayout();
             infoPanel.SuspendLayout();
             SuspendLayout();
-            // 
-            // drawingArea
-            // 
-            drawingArea.BackColor = SystemColors.ControlLightLight;
-            drawingArea.Location = new Point(0, 49);
-            drawingArea.Name = "drawingArea";
-            drawingArea.Size = new Size(800, 370);
-            drawingArea.TabIndex = 0;
-            drawingArea.TabStop = false;
-            drawingArea.SizeChanged += drawingArea_SizeChanged;
-            drawingArea.MouseDown += drawingArea_MouseDown;
-            drawingArea.MouseMove += drawingArea_MouseMove;
-            drawingArea.MouseUp += drawingArea_MouseUp;
             // 
             // toolStrip
             // 
@@ -148,20 +134,29 @@
             mousePositionLabel.Text = "Position: ";
             mousePositionLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // resizablePanel
+            // 
+            resizablePanel.BackColor = SystemColors.ActiveCaption;
+            resizablePanel.Location = new Point(0, 52);
+            resizablePanel.Name = "resizablePanel";
+            resizablePanel.Padding = new Padding(2);
+            resizablePanel.Size = new Size(800, 370);
+            resizablePanel.TabIndex = 5;
+            resizablePanel.Text = "resizableControl1";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(resizablePanel);
             Controls.Add(infoPanel);
             Controls.Add(toolStrip);
             Controls.Add(menuStrip1);
-            Controls.Add(drawingArea);
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
             Text = "MainForm";
             KeyDown += MainForm_KeyDown;
-            ((System.ComponentModel.ISupportInitialize)drawingArea).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             infoPanel.ResumeLayout(false);
@@ -170,8 +165,6 @@
         }
 
         #endregion
-
-        private PictureBox drawingArea;
         private ToolStrip toolStrip;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fileToolStripMenuItem;
@@ -183,5 +176,6 @@
         private TableLayoutPanel infoPanel;
         private Label mousePositionLabel;
         private Label imageSizeInfoLabel;
+        private Controls.ResizablePanel resizablePanel;
     }
 }

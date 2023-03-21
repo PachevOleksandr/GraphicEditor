@@ -14,6 +14,8 @@ namespace GraphicEditor.View
 {
     public partial class MainForm : Form
     {
+        private PictureBox drawingArea;
+
         private IDrawingTool activeTool;
 
         private History<Image> drawingHistory;
@@ -49,6 +51,17 @@ namespace GraphicEditor.View
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            drawingArea = new PictureBox()
+            {
+                Dock = DockStyle.Fill,
+            };
+
+            drawingArea.MouseDown += drawingArea_MouseDown;
+            drawingArea.MouseMove += drawingArea_MouseMove;
+            drawingArea.MouseUp += drawingArea_MouseUp;
+
+            resizablePanel.Controls.Add(drawingArea);
 
             activeTool = new Line { ForegroundColor = Color.RebeccaPurple, Thickness = 7 };
             imageSizeInfoLabel.Text = $"Size: {drawingArea.Width} x {drawingArea.Height}";
