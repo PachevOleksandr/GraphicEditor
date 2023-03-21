@@ -10,10 +10,11 @@ namespace GraphicEditor.View.Tools
     {
         public Color ForegroundColor { get; set; }
         public Color BackgroundColor { get; set; }
-
         public ushort Thickness { get; set; }
 
-        public void StartDrawing(int x, int y, Image image);
-        public void Draw(int x, int y, Image image);
+        public Image Image { get; }
+
+        public void StartDrawingFrom(Point point);
+        public void DrawNext(Point point);
     }
 }

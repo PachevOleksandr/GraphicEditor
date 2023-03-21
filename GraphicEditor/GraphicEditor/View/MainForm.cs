@@ -42,7 +42,6 @@ namespace GraphicEditor.View
             base.OnLoad(e);
 
             drawingSheet = new(Width - 10, Height - 10);
-
             drawingSheet.ImageChanged += DrawingSheet_ImageChanged;
 
             drawingArea.Image = drawingSheet.Image;
@@ -66,7 +65,7 @@ namespace GraphicEditor.View
         {
             if (e.Button == MouseButtons.Left)
             {
-                drawingSheet.StartDrawing(e.X, e.Y);
+                drawingSheet.StartDrawingFrom(new Point(e.X, e.Y));
             }
         }
 
@@ -76,7 +75,7 @@ namespace GraphicEditor.View
 
             if (e.Button == MouseButtons.Left)
             {
-                drawingSheet.Draw(e.X, e.Y);
+                drawingSheet.Draw(new Point(e.X, e.Y));
             }
         }
 

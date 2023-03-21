@@ -14,27 +14,33 @@ namespace GraphicEditor.View.Tools
         public Color ForegroundColor { get; set; }
         public Color BackgroundColor { get; set; }
         public ushort Thickness { get; set; }
+        public Image Image { get; }
 
-        public void StartDrawing(int x, int y, Image image)
+        public Figure(Image image)
         {
-            startPoint = new Point(x, y);
-            startState = image.Clone() as Image;
+            Image = image;
         }
 
-        public void Draw(int x, int y, Image image)
+        public void StartDrawingFrom(Point startPoint)
+        {
+            this.startPoint = startPoint;
+            startState = Image.Clone() as Image;
+        }
+
+        public void DrawNext(Point point)
         {
             if(startState == null)
             {
                 return;
             }
 
-            using (var graphic = Graphics.FromImage(image))
+            using (var graphic = Graphics.FromImage(Image))
             {
                 graphic.DrawImage(startState, 0, 0);
-                DrawFigure(x, y, graphic);
+                DrawFigure(point, graphic);
             }
         }
 
-        abstract protected void DrawFigure(int x, int y, Graphics graphics);
+        abstract protected void DrawFigure(Point point, Graphics graphics);
     }
 }

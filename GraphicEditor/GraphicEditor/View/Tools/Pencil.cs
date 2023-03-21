@@ -12,26 +12,35 @@ namespace GraphicEditor.View.Tools
 
         public Color ForegroundColor { get; set; }
         public Color BackgroundColor { get; set; }
-
         public ushort Thickness { get; set; }
+        public Image Image { get; set; }
 
-        public void StartDrawing(int x, int y, Image image)
+        public Pencil(Image image)
         {
-            var pen = new Pen(ForegroundColor);
-            var graphics = Graphics.FromImage(image);
-            graphics.FillRectangle(pen.Brush, x - Thickness / 2, y - Thickness / 2, Thickness, Thickness);
-
-            previousPoint = new Point(x, y);
+            Image = image;
         }
 
-        public void Draw(int x, int y, Image image)
+        public void StartDrawingFrom(Point startPoint)
         {
-            var point = new Point(x, y);
+            var pen = new Pen(ForegroundColor);
 
+            using (var graphics = Graphics.FromImage(Image))
+            {
+                graphics.FillEllipse(pen.Brush, new Rectangle(startPoint, new Size(Thickness, Thickness)));
+            }
+
+            previousPoint = startPoint;
+        }
+
+        public void DrawNext(Point point)
+        {
             var pen = new Pen(ForegroundColor, Thickness);
-            var graphics = Graphics.FromImage(image);
-            graphics.DrawLine(pen, previousPoint, point);
-            graphics.FillRectangle(pen.Brush, x - Thickness / 2, y - Thickness / 2, Thickness, Thickness);
+
+            using (var graphics = Graphics.FromImage(Image))
+            {
+                graphics.DrawLine(pen, previousPoint, point);
+                graphics.FillEllipse(pen.Brush, new Rectangle(point, new Size(Thickness, Thickness)));
+            }
 
             previousPoint = point;
         }

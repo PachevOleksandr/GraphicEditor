@@ -41,23 +41,23 @@ namespace GraphicEditor.View
 
         public DrawingSheet(int width, int height)
         {
-            Initialize();
-
             Image = GetEmptyImage(width, height);
             ImageHistory = new History<Image>(Image);
+
+            Initialize();
         }
 
         public DrawingSheet(Image image)
         {
-            Initialize();
-
             Image = image;
             ImageHistory = new History<Image>(Image);
+
+            Initialize();
         }
 
         private void Initialize()
         {
-            SelectedTool = new Pencil
+            SelectedTool = new Pencil(Image)
             {
                 ForegroundColor = Color.Black,
                 BackgroundColor = Color.White,
@@ -97,15 +97,15 @@ namespace GraphicEditor.View
 
         #region Drawing
 
-        public void StartDrawing(int x, int y)
+        public void StartDrawingFrom(Point startPoint)
         {
-            SelectedTool.StartDrawing(x, y, Image);
+            SelectedTool.StartDrawingFrom(startPoint);
             ImageChanged?.Invoke(this, Image);
         }
 
-        public void Draw(int x, int y)
+        public void Draw(Point point)
         {
-            SelectedTool.Draw(x, y, Image);
+            SelectedTool.DrawNext(point);
             ImageChanged?.Invoke(this, Image);
         }
 

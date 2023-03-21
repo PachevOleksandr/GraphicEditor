@@ -8,11 +8,13 @@ namespace GraphicEditor.View.Tools
 {
     internal class Line : Figure
     {
-        protected override void DrawFigure(int x, int y, Graphics graphics)
+        public Line(Image image) : base(image) { }
+
+        protected override void DrawFigure(Point point, Graphics graphics)
         {
             var pen = new Pen(ForegroundColor, Thickness);
 
-            graphics.DrawLine(pen, startPoint, new Point { X = x, Y = y });
+            graphics.DrawLine(pen, startPoint, point);
         }
     }
 }
