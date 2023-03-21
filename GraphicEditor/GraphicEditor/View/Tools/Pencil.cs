@@ -9,6 +9,10 @@ namespace GraphicEditor.View.Tools
     internal class Pencil : IDrawingTool
     {
         private Point previousPoint;
+
+        public Color ForegroundColor { get; set; }
+        public Color BackgroundColor { get; set; }
+        public ushort Thickness { get; set; }
         public Image Image { get; set; }
 
         public Pencil(Image image)
@@ -16,9 +20,9 @@ namespace GraphicEditor.View.Tools
             Image = image;
         }
 
-        public void StartDrawingFrom(Point startPoint, Color color, int thickness)
+        public void StartDrawingFrom(Point startPoint)
         {
-            var pen = new Pen(color);
+            var pen = new Pen(ForegroundColor);
 
             using (var graphics = Graphics.FromImage(Image))
             {

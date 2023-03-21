@@ -111,24 +111,24 @@
             figuresToolStripDropDownButton.ImageTransparentColor = Color.Magenta;
             figuresToolStripDropDownButton.Name = "figuresToolStripDropDownButton";
             figuresToolStripDropDownButton.Size = new Size(29, 22);
-            figuresToolStripDropDownButton.Text = "toolStripDropDownButton1";
+            figuresToolStripDropDownButton.Text = "figuresToolStripDropDownButton";
             // 
             // lineToolStripMenuItem
             // 
             lineToolStripMenuItem.Name = "lineToolStripMenuItem";
-            lineToolStripMenuItem.Size = new Size(126, 22);
+            lineToolStripMenuItem.Size = new Size(180, 22);
             lineToolStripMenuItem.Text = "Line";
             // 
             // rectangleToolStripMenuItem
             // 
             rectangleToolStripMenuItem.Name = "rectangleToolStripMenuItem";
-            rectangleToolStripMenuItem.Size = new Size(126, 22);
+            rectangleToolStripMenuItem.Size = new Size(180, 22);
             rectangleToolStripMenuItem.Text = "Rectangle";
             // 
             // ellipseToolStripMenuItem
             // 
             ellipseToolStripMenuItem.Name = "ellipseToolStripMenuItem";
-            ellipseToolStripMenuItem.Size = new Size(126, 22);
+            ellipseToolStripMenuItem.Size = new Size(180, 22);
             ellipseToolStripMenuItem.Text = "Ellipse";
             // 
             // toolStripSeparator1

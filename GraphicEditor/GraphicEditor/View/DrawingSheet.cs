@@ -15,6 +15,9 @@ namespace GraphicEditor.View
         public delegate void ImageHandler(object sender, Image image);
         public event ImageHandler ImageChanged;
 
+        public Color ForegroundColor { get; set; }
+        public Color BackgroundColor { get; set; }
+
         private Image image;
         public Image Image
         {
@@ -41,6 +44,9 @@ namespace GraphicEditor.View
 
         public DrawingSheet(int width, int height)
         {
+            ForegroundColor = Color.Black;
+            BackgroundColor = Color.White;
+
             Image = GetEmptyImage(width, height);
             ImageHistory = new History<Image>(Image);
 
@@ -49,6 +55,9 @@ namespace GraphicEditor.View
 
         public DrawingSheet(Image image)
         {
+            ForegroundColor = Color.Black;
+            BackgroundColor = Color.White;
+
             Image = image;
             ImageHistory = new History<Image>(Image);
 
@@ -59,8 +68,8 @@ namespace GraphicEditor.View
         {
             SelectedTool = new Pencil(Image)
             {
-                ForegroundColor = Color.Black,
-                BackgroundColor = Color.White,
+                ForegroundColor = ForegroundColor,
+                BackgroundColor = BackgroundColor,
                 Thickness = 1
             };
         }
@@ -71,7 +80,7 @@ namespace GraphicEditor.View
 
             using (var graphics = Graphics.FromImage(img))
             {
-                graphics.Clear(Color.White);
+                graphics.Clear(BackgroundColor);
             }
 
             return img;
@@ -93,6 +102,19 @@ namespace GraphicEditor.View
             }
 
             Image = newImage;
+        }
+
+        public void Resize(int width, int height)
+        {
+            var newImg = new Bitmap(width, height);
+
+            using (var graphic = Graphics.FromImage(newImg))
+            {
+                graphic.Clear(BackgroundColor);
+                graphic.DrawImage(Image, 0, 0);
+            }
+
+            Image = newImg;
         }
 
         #region Drawing

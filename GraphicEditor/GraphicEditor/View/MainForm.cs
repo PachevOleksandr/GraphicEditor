@@ -41,7 +41,7 @@ namespace GraphicEditor.View
         {
             base.OnLoad(e);
 
-            drawingSheet = new(Width - 10, Height - 10);
+            drawingSheet = new(resizablePanel.Width - 4, resizablePanel.Height - 4);
             drawingSheet.ImageChanged += DrawingSheet_ImageChanged;
 
             drawingArea.Image = drawingSheet.Image;
@@ -108,7 +108,10 @@ namespace GraphicEditor.View
         private void drawingArea_SizeChanged(object sender, EventArgs e)
         {
             if (sender is PictureBox pb)
+            {
                 imageSizeInfoLabel.Text = $"Size: {pb.Width} x {pb.Height}";
+                drawingSheet?.Resize(pb.Width, pb.Height);
+            }
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
