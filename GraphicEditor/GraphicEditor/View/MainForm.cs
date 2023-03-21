@@ -45,6 +45,27 @@ namespace GraphicEditor.View
             drawingSheet.ImageChanged += DrawingSheet_ImageChanged;
 
             drawingArea.Image = drawingSheet.Image;
+
+            foregroundColorButton.Image = GetMonoImage(foregroundColorButton.Width, foregroundColorButton.Height, drawingSheet.SelectedTool.ForegroundColor);
+            backgroundColorButton.Image = GetMonoImage(backgroundColorButton.Width, backgroundColorButton.Height, drawingSheet.SelectedTool.BackgroundColor);
+        }
+
+        private Image GetMonoImage(int width, int height, Color color)
+        {
+            var image = new Bitmap(width, height);
+
+            using (var graphics = Graphics.FromImage(image))
+            {
+                graphics.Clear(color);
+
+                var penBlack = new Pen(Color.Black);
+                graphics.DrawRectangle(penBlack, 0, 0, width - 1, height - 1);
+
+                var penWhite = new Pen(Color.White);
+                graphics.DrawRectangle(penWhite, 1, 1, width - 4, height - 4);
+            }
+
+            return image;
         }
 
         private void DrawingSheet_ImageChanged(object sender, Image image)
@@ -102,6 +123,28 @@ namespace GraphicEditor.View
                 {
                     drawingSheet.GoForward();
                 }
+            }
+        }
+
+        private void foregroundColorButton_Click(object sender, EventArgs e)
+        {
+            var btn = sender as ToolStripButton;
+
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                drawingSheet.SelectedTool.ForegroundColor = colorDialog.Color;
+                btn.Image = GetMonoImage(btn.Width, btn.Height, colorDialog.Color);
+            }
+        }
+
+        private void backgroundColorButton_Click(object sender, EventArgs e)
+        {
+            var btn = sender as ToolStripButton;
+
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                drawingSheet.SelectedTool.BackgroundColor = colorDialog.Color;
+                btn.Image = GetMonoImage(btn.Width, btn.Height, colorDialog.Color);
             }
         }
     }

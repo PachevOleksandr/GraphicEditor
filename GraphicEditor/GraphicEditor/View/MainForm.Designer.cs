@@ -28,7 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             toolStrip = new ToolStrip();
+            foregroundColorButton = new ToolStripButton();
+            backgroundColorButton = new ToolStripButton();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             openToolStripMenuItem = new ToolStripMenuItem();
@@ -40,17 +43,43 @@
             imageSizeInfoLabel = new Label();
             mousePositionLabel = new Label();
             resizablePanel = new Controls.ResizablePanel();
+            colorDialog = new ColorDialog();
+            toolStrip.SuspendLayout();
             menuStrip1.SuspendLayout();
             infoPanel.SuspendLayout();
             SuspendLayout();
             // 
             // toolStrip
             // 
+            toolStrip.Items.AddRange(new ToolStripItem[] { foregroundColorButton, backgroundColorButton });
             toolStrip.Location = new Point(0, 24);
             toolStrip.Name = "toolStrip";
             toolStrip.Size = new Size(800, 25);
             toolStrip.TabIndex = 1;
             toolStrip.Text = "toolStrip1";
+            // 
+            // foregroundColorButton
+            // 
+            foregroundColorButton.BackColor = SystemColors.Control;
+            foregroundColorButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            foregroundColorButton.Image = (Image)resources.GetObject("foregroundColorButton.Image");
+            foregroundColorButton.ImageTransparentColor = Color.Magenta;
+            foregroundColorButton.Name = "foregroundColorButton";
+            foregroundColorButton.Size = new Size(23, 22);
+            foregroundColorButton.Text = "toolStripButton1";
+            foregroundColorButton.ToolTipText = "Foreground color";
+            foregroundColorButton.Click += foregroundColorButton_Click;
+            // 
+            // backgroundColorButton
+            // 
+            backgroundColorButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            backgroundColorButton.Image = (Image)resources.GetObject("backgroundColorButton.Image");
+            backgroundColorButton.ImageTransparentColor = Color.Magenta;
+            backgroundColorButton.Name = "backgroundColorButton";
+            backgroundColorButton.Size = new Size(23, 22);
+            backgroundColorButton.Text = "toolStripButton2";
+            backgroundColorButton.ToolTipText = "Background color";
+            backgroundColorButton.Click += backgroundColorButton_Click;
             // 
             // menuStrip1
             // 
@@ -157,6 +186,8 @@
             Name = "MainForm";
             Text = "MainForm";
             KeyDown += MainForm_KeyDown;
+            toolStrip.ResumeLayout(false);
+            toolStrip.PerformLayout();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             infoPanel.ResumeLayout(false);
@@ -177,5 +208,8 @@
         private Label mousePositionLabel;
         private Label imageSizeInfoLabel;
         private Controls.ResizablePanel resizablePanel;
+        private ToolStripButton foregroundColorButton;
+        private ToolStripButton backgroundColorButton;
+        private ColorDialog colorDialog;
     }
 }
