@@ -48,9 +48,9 @@
             // drawingArea
             // 
             drawingArea.BackColor = SystemColors.ControlLightLight;
-            drawingArea.Location = new Point(0, 52);
+            drawingArea.Location = new Point(0, 49);
             drawingArea.Name = "drawingArea";
-            drawingArea.Size = new Size(800, 398);
+            drawingArea.Size = new Size(800, 370);
             drawingArea.TabIndex = 0;
             drawingArea.TabStop = false;
             drawingArea.SizeChanged += drawingArea_SizeChanged;

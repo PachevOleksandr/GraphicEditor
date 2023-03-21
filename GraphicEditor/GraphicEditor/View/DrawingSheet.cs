@@ -1,4 +1,5 @@
-﻿using GraphicEditor.View.Tools;
+﻿using GraphicEditor.Model;
+using GraphicEditor.View.Tools;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,18 +14,6 @@ namespace GraphicEditor.View
         public delegate void ImageHandler(object sender, Image image);
         public event ImageHandler ImageChanged;
 
-        public Color ForegroundColor
-        {
-            get => SelectedTool.ForegroundColor;
-            set => SelectedTool.ForegroundColor = value;
-        }
-
-        public Color BackgroundColor
-        {
-            get => SelectedTool.BackgroundColor;
-            set => SelectedTool.BackgroundColor = value;
-        }
-
         private Image image;
         public Image Image
         {
@@ -36,13 +25,25 @@ namespace GraphicEditor.View
             }
         }
 
-        public IDrawingTool SelectedTool { get; set; }
+        public int Width
+        {
+            get => Image.Width;
+        }
+
+        public int Height
+        {
+            get => Image.Height;
+        }
+
+        public IDrawingTool SelectedTool { get; private set; }
+        public History<Image> ImageHistory { get; }
 
         public DrawingSheet(int width, int height)
         {
             Initialize();
 
-            Image = GetEmptyImage(width, height, BackgroundColor);
+            Image = GetEmptyImage(width, height);
+            ImageHistory = new History<Image>(Image);
         }
 
         public DrawingSheet(Image image)
@@ -50,31 +51,37 @@ namespace GraphicEditor.View
             Initialize();
 
             Image = image;
+            ImageHistory = new History<Image>(Image);
         }
 
         private void Initialize()
         {
-            ForegroundColor = Color.Black;
-            BackgroundColor = Color.White;
-
-            SelectedTool = new Pencil { Thickness = 1 };
+            SelectedTool = new Pencil
+            {
+                Thickness = 1
+            };
         }
 
-        private Image GetEmptyImage(int width, int height, Color color)
+        private Image GetEmptyImage(int width, int height)
         {
             var img = new Bitmap(width, height);
 
             using (var graphics = Graphics.FromImage(img))
             {
-                graphics.Clear(color);
+                graphics.Clear(Color.White);
             }
 
             return img;
         }
 
-        public void Save()
+        public void SaveImageToFile(string filePath)
         {
+            Image.Save(filePath);
+        }
 
+        public void LoadImageFromFile(string filePath)
+        {
+            Image = Image.FromFile(filePath);
         }
     }
 }
