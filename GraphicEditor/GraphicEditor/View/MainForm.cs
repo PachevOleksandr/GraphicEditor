@@ -16,62 +16,41 @@ namespace GraphicEditor.View
     {
         private PictureBox drawingArea;
 
-        private IDrawingTool activeTool;
-
-        private History<Image> drawingHistory;
-
-        private Image? activeImage;
-        public Image? ActiveImage
-        {
-            get => activeImage;
-            set
-            {
-                activeImage = value;
-                drawingArea.Image = activeImage;
-            }
-        }
-
-        public int ImageWidth
-        {
-            get => drawingArea.Width;
-            set => drawingArea.Width = value;
-        }
-
-        public int ImageHeight
-        {
-            get => drawingArea.Height;
-            set => drawingArea.Height = value;
-        }
+        private DrawingSheet drawingSheet;
 
         public MainForm()
         {
             InitializeComponent();
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
 
             drawingArea = new PictureBox()
             {
                 Dock = DockStyle.Fill,
             };
 
+#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
             drawingArea.MouseDown += drawingArea_MouseDown;
             drawingArea.MouseMove += drawingArea_MouseMove;
             drawingArea.MouseUp += drawingArea_MouseUp;
+            drawingArea.SizeChanged += drawingArea_SizeChanged;
+#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
 
             resizablePanel.Controls.Add(drawingArea);
+        }
 
-            activeTool = new Line { ForegroundColor = Color.RebeccaPurple, Thickness = 7 };
-            imageSizeInfoLabel.Text = $"Size: {drawingArea.Width} x {drawingArea.Height}";
-            ActiveImage = new Bitmap(Width, Height);
-            using (var graphics = Graphics.FromImage(ActiveImage))
-            {
-                graphics.Clear(Color.White);
-            }
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
 
-            drawingHistory = new History<Image>(ActiveImage.Clone() as Image);
+            drawingSheet = new(Width - 10, Height - 10);
+
+            drawingSheet.ImageChanged += DrawingSheet_ImageChanged;
+
+            drawingArea.Image = drawingSheet.Image;
+        }
+
+        private void DrawingSheet_ImageChanged(object sender, Image image)
+        {
+            drawingArea.Image = image;
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -79,15 +58,7 @@ namespace GraphicEditor.View
             openFileDialog.Filter = "Default image files|*.bmp;";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                var newImage = Image.FromFile(openFileDialog.FileName);
-                var tmpBmp = new Bitmap(newImage.Width, newImage.Height);
-
-                using (var graphic = Graphics.FromImage(tmpBmp))
-                {
-                    graphic.DrawImage(newImage, 0, 0);
-                }
-
-                ActiveImage = tmpBmp;
+                drawingSheet.LoadImageFromFile(openFileDialog.FileName);
             }
         }
 
@@ -95,8 +66,7 @@ namespace GraphicEditor.View
         {
             if (e.Button == MouseButtons.Left)
             {
-                activeTool.StartDrawing(e.X, e.Y, ActiveImage);
-                drawingArea.Refresh();
+                drawingSheet.StartDrawing(e.X, e.Y);
             }
         }
 
@@ -106,19 +76,19 @@ namespace GraphicEditor.View
 
             if (e.Button == MouseButtons.Left)
             {
-                activeTool.Draw(e.X, e.Y, ActiveImage);
-                drawingArea.Refresh();
+                drawingSheet.Draw(e.X, e.Y);
             }
-        }
-
-        private void drawingArea_SizeChanged(object sender, EventArgs e)
-        {
-            imageSizeInfoLabel.Text = $"Size: {drawingArea.Width} x {drawingArea.Height}";
         }
 
         private void drawingArea_MouseUp(object sender, MouseEventArgs e)
         {
-            drawingHistory.AddItem(ActiveImage.Clone() as Image);
+            drawingSheet.StopDrawing();
+        }
+
+        private void drawingArea_SizeChanged(object sender, EventArgs e)
+        {
+            if (sender is PictureBox pb)
+                imageSizeInfoLabel.Text = $"Size: {pb.Width} x {pb.Height}";
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
@@ -127,11 +97,11 @@ namespace GraphicEditor.View
             {
                 if (e.KeyCode == Keys.Z)
                 {
-                    ActiveImage = drawingHistory.Rollback();
+                    drawingSheet.Rollback();
                 }
                 else if (e.KeyCode == Keys.Y)
                 {
-                    ActiveImage = drawingHistory.GoForward();
+                    drawingSheet.GoForward();
                 }
             }
         }

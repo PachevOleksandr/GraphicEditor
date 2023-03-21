@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace GraphicEditor.View
 {
@@ -21,7 +22,7 @@ namespace GraphicEditor.View
             private set
             {
                 image = value;
-                ImageChanged.Invoke(this, image);
+                ImageChanged?.Invoke(this, image);
             }
         }
 
@@ -58,6 +59,8 @@ namespace GraphicEditor.View
         {
             SelectedTool = new Pencil
             {
+                ForegroundColor = Color.Black,
+                BackgroundColor = Color.White,
                 Thickness = 1
             };
         }
@@ -81,7 +84,50 @@ namespace GraphicEditor.View
 
         public void LoadImageFromFile(string filePath)
         {
-            Image = Image.FromFile(filePath);
+            var newImage = Image.FromFile(filePath);
+            var tmpBmp = new Bitmap(newImage.Width, newImage.Height);
+
+            using (var graphic = Graphics.FromImage(tmpBmp))
+            {
+                graphic.DrawImage(newImage, 0, 0);
+            }
+
+            Image = newImage;
         }
+
+        #region Drawing
+
+        public void StartDrawing(int x, int y)
+        {
+            SelectedTool.StartDrawing(x, y, Image);
+            ImageChanged?.Invoke(this, Image);
+        }
+
+        public void Draw(int x, int y)
+        {
+            SelectedTool.Draw(x, y, Image);
+            ImageChanged?.Invoke(this, Image);
+        }
+
+        public void StopDrawing()
+        {
+            ImageHistory.AddItem(Image.Clone() as Image);
+        }
+
+        #endregion
+
+        #region History
+
+        public void Rollback()
+        {
+            Image = ImageHistory.Rollback();
+        }
+
+        public void GoForward()
+        {
+            Image = ImageHistory.GoForward();
+        }
+
+        #endregion
     }
 }
