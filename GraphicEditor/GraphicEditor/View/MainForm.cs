@@ -46,8 +46,8 @@ namespace GraphicEditor.View
 
             drawingArea.Image = drawingSheet.Image;
 
-            foregroundColorButton.Image = GetMonoImage(foregroundColorButton.Width, foregroundColorButton.Height, drawingSheet.SelectedTool.ForegroundColor);
-            backgroundColorButton.Image = GetMonoImage(backgroundColorButton.Width, backgroundColorButton.Height, drawingSheet.SelectedTool.BackgroundColor);
+            foregroundColorButton.Image = GetMonoImage(foregroundColorButton.Width, foregroundColorButton.Height, drawingSheet.DrawingData.ForegroundColor);
+            backgroundColorButton.Image = GetMonoImage(backgroundColorButton.Width, backgroundColorButton.Height, drawingSheet.DrawingData.BackgroundColor);
         }
 
         private Image GetMonoImage(int width, int height, Color color)
@@ -135,7 +135,7 @@ namespace GraphicEditor.View
 
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
-                drawingSheet.SelectedTool.ForegroundColor = colorDialog.Color;
+                drawingSheet.DrawingData.ForegroundColor = colorDialog.Color;
                 btn.Image = GetMonoImage(btn.Width, btn.Height, colorDialog.Color);
             }
         }
@@ -146,7 +146,7 @@ namespace GraphicEditor.View
 
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
-                drawingSheet.SelectedTool.BackgroundColor = colorDialog.Color;
+                drawingSheet.DrawingData.BackgroundColor = colorDialog.Color;
                 btn.Image = GetMonoImage(btn.Width, btn.Height, colorDialog.Color);
             }
         }

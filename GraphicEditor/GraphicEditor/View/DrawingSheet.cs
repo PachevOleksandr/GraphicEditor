@@ -1,5 +1,6 @@
 ﻿using GraphicEditor.Model;
 using GraphicEditor.View.Tools;
+using GraphicEditor.View.Tools.ClassicalTools;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,17 +16,15 @@ namespace GraphicEditor.View
         public delegate void ImageHandler(object sender, Image image);
         public event ImageHandler ImageChanged;
 
-        public Color ForegroundColor { get; set; }
-        public Color BackgroundColor { get; set; }
+        public DrawingToolData DrawingData { get; set; }
 
-        private Image image;
         public Image Image
         {
-            get => image;
+            get => DrawingData.Image;
             private set
             {
-                image = value;
-                ImageChanged?.Invoke(this, image);
+                DrawingData.Image = value;
+                ImageChanged?.Invoke(this, DrawingData.Image);
             }
         }
 
@@ -39,13 +38,12 @@ namespace GraphicEditor.View
             get => Image.Height;
         }
 
-        public IDrawingTool SelectedTool { get; set; }
+        public IDrawingTool<DrawingToolData> SelectedTool { get; set; }
         public History<Image> ImageHistory { get; }
 
         public DrawingSheet(int width, int height)
         {
-            ForegroundColor = Color.Black;
-            BackgroundColor = Color.White;
+            DrawingData = new DrawingToolData();
 
             Image = GetEmptyImage(width, height);
             ImageHistory = new History<Image>(Image);
@@ -55,8 +53,7 @@ namespace GraphicEditor.View
 
         public DrawingSheet(Image image)
         {
-            ForegroundColor = Color.Black;
-            BackgroundColor = Color.White;
+            DrawingData = new DrawingToolData();
 
             Image = image;
             ImageHistory = new History<Image>(Image);
@@ -66,12 +63,7 @@ namespace GraphicEditor.View
 
         private void Initialize()
         {
-            SelectedTool = new Pencil(Image)
-            {
-                ForegroundColor = ForegroundColor,
-                BackgroundColor = BackgroundColor,
-                Thickness = 1
-            };
+            SelectedTool = new Pencil();
         }
 
         private Image GetEmptyImage(int width, int height)
@@ -80,7 +72,7 @@ namespace GraphicEditor.View
 
             using (var graphics = Graphics.FromImage(img))
             {
-                graphics.Clear(BackgroundColor);
+                graphics.Clear(DrawingData.BackgroundColor);
             }
 
             return img;
@@ -110,7 +102,7 @@ namespace GraphicEditor.View
 
             using (var graphic = Graphics.FromImage(newImg))
             {
-                graphic.Clear(BackgroundColor);
+                graphic.Clear(DrawingData.BackgroundColor);
                 graphic.DrawImage(Image, 0, 0);
             }
 
@@ -121,13 +113,17 @@ namespace GraphicEditor.View
 
         public void StartDrawingFrom(Point startPoint)
         {
-            SelectedTool.StartDrawingFrom(startPoint);
+            DrawingData.StartPoint = startPoint;
+
+            SelectedTool.StartDrawingFrom(DrawingData);
             ImageChanged?.Invoke(this, Image);
         }
 
         public void Draw(Point point)
         {
-            SelectedTool.DrawNext(point);
+            DrawingData.EndPoint = point;
+
+            SelectedTool.DrawNext(DrawingData);
             ImageChanged?.Invoke(this, Image);
         }
 
