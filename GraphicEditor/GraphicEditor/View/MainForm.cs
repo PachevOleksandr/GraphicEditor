@@ -117,11 +117,11 @@ namespace GraphicEditor.View
             {
                 if (e.KeyCode == Keys.Z)
                 {
-                    drawingSheet.Rollback();
+                    drawingSheet.Undo();
                 }
                 else if (e.KeyCode == Keys.Y)
                 {
-                    drawingSheet.GoForward();
+                    drawingSheet.Redo();
                 }
             }
         }
@@ -146,6 +146,16 @@ namespace GraphicEditor.View
                 drawingSheet.SelectedTool.BackgroundColor = colorDialog.Color;
                 btn.Image = GetMonoImage(btn.Width, btn.Height, colorDialog.Color);
             }
+        }
+
+        private void undoToolStripButton_Click(object sender, EventArgs e)
+        {
+            drawingSheet.Undo();
+        }
+
+        private void redoToolStripButton_Click(object sender, EventArgs e)
+        {
+            drawingSheet.Redo();
         }
     }
 }

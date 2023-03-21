@@ -17,14 +17,14 @@ namespace GraphicEditor.Model
             index = 0;
         }
 
-        public bool CanRollback()
+        public bool CanUndo()
         {
             return index > 0;
         }
 
-        public T Rollback()
+        public T Undo()
         {
-            if (CanRollback())
+            if (CanUndo())
             {
                 return history[--index];
             }
@@ -32,14 +32,14 @@ namespace GraphicEditor.Model
             return history[index];
         }
 
-        public bool CanGoForward()
+        public bool CanRedo()
         {
             return index < history.Count - 1;
         }
 
-        public T GoForward()
+        public T Redo()
         {
-            if (CanGoForward())
+            if (CanRedo())
             {
                 return history[++index];
             }

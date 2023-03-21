@@ -36,7 +36,7 @@ namespace GraphicEditor.View
             get => Image.Height;
         }
 
-        public IDrawingTool SelectedTool { get; private set; }
+        public IDrawingTool SelectedTool { get; set; }
         public History<Image> ImageHistory { get; }
 
         public DrawingSheet(int width, int height)
@@ -118,14 +118,14 @@ namespace GraphicEditor.View
 
         #region History
 
-        public void Rollback()
+        public void Undo()
         {
-            Image = ImageHistory.Rollback();
+            Image = ImageHistory.Undo();
         }
 
-        public void GoForward()
+        public void Redo()
         {
-            Image = ImageHistory.GoForward();
+            Image = ImageHistory.Redo();
         }
 
         #endregion
