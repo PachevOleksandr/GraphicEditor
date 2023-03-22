@@ -136,10 +136,10 @@ namespace GraphicEditor.View
         {
             var btn = sender as ToolStripButton;
 
-            if (colorDialog.ShowDialog() == DialogResult.OK)
+            if (foregroundColorDialog.ShowDialog() == DialogResult.OK)
             {
-                drawingSheet.DrawingData.ForegroundColor = colorDialog.Color;
-                btn.Image = GetMonoImage(btn.Width, btn.Height, colorDialog.Color);
+                drawingSheet.DrawingData.ForegroundColor = foregroundColorDialog.Color;
+                btn.Image = GetMonoImage(btn.Width, btn.Height, foregroundColorDialog.Color);
             }
         }
 
@@ -147,10 +147,10 @@ namespace GraphicEditor.View
         {
             var btn = sender as ToolStripButton;
 
-            if (colorDialog.ShowDialog() == DialogResult.OK)
+            if (backgroundColorDialog.ShowDialog() == DialogResult.OK)
             {
-                drawingSheet.DrawingData.BackgroundColor = colorDialog.Color;
-                btn.Image = GetMonoImage(btn.Width, btn.Height, colorDialog.Color);
+                drawingSheet.DrawingData.BackgroundColor = backgroundColorDialog.Color;
+                btn.Image = GetMonoImage(btn.Width, btn.Height, backgroundColorDialog.Color);
             }
         }
 
@@ -180,6 +180,11 @@ namespace GraphicEditor.View
                 if (drawingSheet != null)
                     drawingSheet.DrawingData.Thickness = cb.SelectedIndex * 2 + 1;
             }
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

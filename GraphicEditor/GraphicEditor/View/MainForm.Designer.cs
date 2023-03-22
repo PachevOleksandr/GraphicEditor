@@ -56,7 +56,8 @@ namespace GraphicEditor.View
             imageSizeInfoLabel = new Label();
             mousePositionLabel = new Label();
             resizablePanel = new ResizablePanel();
-            colorDialog = new ColorDialog();
+            foregroundColorDialog = new ColorDialog();
+            backgroundColorDialog = new ColorDialog();
             toolStrip.SuspendLayout();
             menuStrip.SuspendLayout();
             infoPanel.SuspendLayout();
@@ -288,6 +289,16 @@ namespace GraphicEditor.View
             resizablePanel.TabIndex = 5;
             resizablePanel.Text = "resizableControl1";
             // 
+            // foregroundColorDialog
+            // 
+            foregroundColorDialog.AnyColor = true;
+            foregroundColorDialog.FullOpen = true;
+            // 
+            // backgroundColorDialog
+            // 
+            backgroundColorDialog.Color = Color.White;
+            backgroundColorDialog.FullOpen = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -300,6 +311,7 @@ namespace GraphicEditor.View
             MainMenuStrip = menuStrip;
             Name = "MainForm";
             Text = "MainForm";
+            Load += MainForm_Load;
             KeyDown += MainForm_KeyDown;
             toolStrip.ResumeLayout(false);
             toolStrip.PerformLayout();
@@ -325,7 +337,7 @@ namespace GraphicEditor.View
         private Controls.ResizablePanel resizablePanel;
         private ToolStripButton foregroundColorButton;
         private ToolStripButton backgroundColorButton;
-        private ColorDialog colorDialog;
+        private ColorDialog foregroundColorDialog;
         private ToolStripDropDownButton figuresToolStripDropDownButton;
         private ToolStripToolButton lineToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator1;
@@ -341,5 +353,6 @@ namespace GraphicEditor.View
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripComboBox thicknessToolStripComboBox;
         private ToolStripSeparator toolStripSeparator4;
+        private ColorDialog backgroundColorDialog;
     }
 }
