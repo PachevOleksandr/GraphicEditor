@@ -128,6 +128,7 @@ namespace GraphicEditor.View
 
         public void StopDrawing()
         {
+            SelectedTool.FinishDrawing(DrawingData);
             ImageHistory.AddItem(Image.Clone() as Image);
         }
 
@@ -137,11 +138,23 @@ namespace GraphicEditor.View
 
         public void Undo()
         {
+            if (SelectedTool.Executing)
+            {
+                SelectedTool.CancelDrawing(DrawingData);
+                return;
+            }
+
             Image = ImageHistory.Undo().Clone() as Image;
         }
 
         public void Redo()
         {
+            if (SelectedTool.Executing)
+            {
+                SelectedTool.FinishDrawing(DrawingData);
+                return;
+            }
+
             Image = ImageHistory.Redo().Clone() as Image;
         }
 

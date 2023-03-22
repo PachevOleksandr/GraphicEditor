@@ -35,6 +35,7 @@ namespace GraphicEditor.View
             undoToolStripButton = new ToolStripButton();
             redoToolStripButton = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
+            textToolStripToolButton = new ToolStripToolButton();
             pencilToolStripButton = new ToolStripToolButton();
             toolStripSeparator3 = new ToolStripSeparator();
             lineToolStripToolButton = new ToolStripToolButton();
@@ -65,7 +66,7 @@ namespace GraphicEditor.View
             // 
             // toolStrip
             // 
-            toolStrip.Items.AddRange(new ToolStripItem[] { undoToolStripButton, redoToolStripButton, toolStripSeparator2, pencilToolStripButton, toolStripSeparator3, lineToolStripToolButton, rectangleToolStripToolButton, ellipseToolStripToolButton, toolStripSeparator1, thicknessToolStripComboBox, toolStripSeparator4, foregroundColorButton, backgroundColorButton });
+            toolStrip.Items.AddRange(new ToolStripItem[] { undoToolStripButton, redoToolStripButton, toolStripSeparator2, textToolStripToolButton, pencilToolStripButton, toolStripSeparator3, lineToolStripToolButton, rectangleToolStripToolButton, ellipseToolStripToolButton, toolStripSeparator1, thicknessToolStripComboBox, toolStripSeparator4, foregroundColorButton, backgroundColorButton });
             toolStrip.Location = new Point(0, 24);
             toolStrip.Name = "toolStrip";
             toolStrip.Size = new Size(800, 25);
@@ -98,6 +99,19 @@ namespace GraphicEditor.View
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(6, 25);
+            // 
+            // textToolStripToolButton
+            // 
+            textToolStripToolButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            textToolStripToolButton.GroupIndex = 1;
+            textToolStripToolButton.Image = (Image)resources.GetObject("textToolStripToolButton.Image");
+            textToolStripToolButton.ImageTransparentColor = Color.Magenta;
+            textToolStripToolButton.Name = "textToolStripToolButton";
+            textToolStripToolButton.Size = new Size(23, 22);
+            textToolStripToolButton.Text = "toolStripButton1";
+            textToolStripToolButton.Tool = Tools.DrawingToolType.TextInput;
+            textToolStripToolButton.ToolTipText = "Text";
+            textToolStripToolButton.Click += drawingTool_ToolStripButton_Click;
             // 
             // pencilToolStripButton
             // 
@@ -356,5 +370,6 @@ namespace GraphicEditor.View
         private ToolStripComboBox thicknessToolStripComboBox;
         private ToolStripSeparator toolStripSeparator4;
         private ColorDialog backgroundColorDialog;
+        private ToolStripToolButton textToolStripToolButton;
     }
 }

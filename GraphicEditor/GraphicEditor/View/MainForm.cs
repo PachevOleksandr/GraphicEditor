@@ -125,7 +125,14 @@ namespace GraphicEditor.View
         {
             if (e.Button == MouseButtons.Left)
             {
-                drawingSheet.StartDrawingFrom(new Point(e.X, e.Y));
+                if (drawingSheet.SelectedTool.Executing)
+                {
+                    drawingSheet.StopDrawing();
+                }
+                else
+                {
+                    drawingSheet.StartDrawingFrom(new Point(e.X, e.Y));
+                }
             }
         }
 
@@ -141,7 +148,11 @@ namespace GraphicEditor.View
 
         private void drawingArea_MouseUp(object sender, MouseEventArgs e)
         {
-            drawingSheet.StopDrawing();
+            if (drawingSheet.SelectedTool.DrawFinishType == DrawFinishType.OnMouseUp &&
+                drawingSheet.SelectedTool.Executing)
+            {
+                drawingSheet.StopDrawing();
+            }
         }
 
         #endregion
