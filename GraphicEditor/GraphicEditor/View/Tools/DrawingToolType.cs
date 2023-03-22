@@ -9,6 +9,7 @@ namespace GraphicEditor.View.Tools
     public enum DrawingToolType
     {
         Pencil,
+        TextInput,
         Line,
         Ellipse,
         Rectangle

@@ -8,7 +8,13 @@ namespace GraphicEditor.View.Tools
 {
     internal interface IDrawingTool
     {
-        public void StartDrawingFrom(DrawingToolData data);
+        public bool Executing { get; }
+        public DrawFinishType DrawFinishType { get; }
+
+        public void StartDrawing(DrawingToolData data);
         public void DrawNext(DrawingToolData data);
+        public void FinishDrawing(DrawingToolData data);
+
+        public void CancelDrawing(DrawingToolData data);
     }
 }

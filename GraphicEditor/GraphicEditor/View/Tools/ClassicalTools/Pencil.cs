@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace GraphicEditor.View.Tools.ClassicalTools
 {
-    internal class Pencil : IDrawingTool
+    internal class Pencil : DrawingTool
     {
         private Point previousPoint;
 
-        public void StartDrawingFrom(DrawingToolData data)
+        public override void StartDrawing(DrawingToolData data)
         {
+            base.StartDrawing(data);
+
             var pen = new Pen(data.ForegroundColor);
 
             using (var graphics = Graphics.FromImage(data.Image))
@@ -23,7 +25,7 @@ namespace GraphicEditor.View.Tools.ClassicalTools
             previousPoint = data.StartPoint;
         }
 
-        public void DrawNext(DrawingToolData data)
+        public override void DrawNext(DrawingToolData data)
         {
             var pen = new Pen(data.ForegroundColor, data.Thickness);
 

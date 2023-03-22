@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 
 namespace GraphicEditor.View.Tools.Figures
 {
-    internal abstract class Figure : IDrawingTool
+    internal abstract class Figure : DrawingTool
     {
         private Image? startState;
 
-        public void StartDrawingFrom(DrawingToolData data)
+        public override void StartDrawing(DrawingToolData data)
         {
+            base.StartDrawing(data);
             startState = data.Image.Clone() as Image;
         }
 
-        public void DrawNext(DrawingToolData data)
+        public override void DrawNext(DrawingToolData data)
         {
             if (startState == null)
             {

@@ -1,6 +1,8 @@
 ﻿using GraphicEditor.Model;
 using GraphicEditor.View.Controls;
 using GraphicEditor.View.Tools;
+using GraphicEditor.View.Tools.ClassicalTools;
+using GraphicEditor.View.Tools.Figures;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +20,8 @@ namespace GraphicEditor.View
         private PictureBox drawingArea;
 
         private DrawingSheet drawingSheet;
+
+        private Dictionary<DrawingToolType, IDrawingTool> tools;
 
         public MainForm()
         {
@@ -38,6 +42,15 @@ namespace GraphicEditor.View
             resizablePanel.Controls.Add(drawingArea);
 
             thicknessToolStripComboBox.SelectedIndex = 0;
+
+            tools = new()
+            {
+                { DrawingToolType.Pencil, new Pencil() },
+                { DrawingToolType.TextInput, new TextInput(drawingArea) },
+                { DrawingToolType.Line, new LineFigure() },
+                { DrawingToolType.Rectangle, new RectangleFigure() },
+                { DrawingToolType.Ellipse, new EllipseFigure() },
+            };
         }
 
         protected override void OnLoad(EventArgs e)
@@ -53,6 +66,7 @@ namespace GraphicEditor.View
 
             drawingSheet = new(data, resizablePanel.Width - 4, resizablePanel.Height - 4);
             drawingSheet.ImageChanged += DrawingSheet_ImageChanged;
+            drawingSheet.SelectedTool = tools.First().Value;
 
             drawingArea.Image = drawingSheet.Image;
 
@@ -83,6 +97,8 @@ namespace GraphicEditor.View
             drawingArea.Image = image;
         }
 
+        #region Work with files
+
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openFileDialog.Filter = "Default image files|*.bmp;";
@@ -91,6 +107,19 @@ namespace GraphicEditor.View
                 drawingSheet.LoadImageFromFile(openFileDialog.FileName);
             }
         }
+
+        #endregion
+
+        private void drawingArea_SizeChanged(object sender, EventArgs e)
+        {
+            if (sender is PictureBox pb)
+            {
+                imageSizeInfoLabel.Text = $"Size: {pb.Width} x {pb.Height}";
+                drawingSheet?.Resize(pb.Width, pb.Height);
+            }
+        }
+
+        #region Drawing
 
         private void drawingArea_MouseDown(object sender, MouseEventArgs e)
         {
@@ -115,29 +144,9 @@ namespace GraphicEditor.View
             drawingSheet.StopDrawing();
         }
 
-        private void drawingArea_SizeChanged(object sender, EventArgs e)
-        {
-            if (sender is PictureBox pb)
-            {
-                imageSizeInfoLabel.Text = $"Size: {pb.Width} x {pb.Height}";
-                drawingSheet?.Resize(pb.Width, pb.Height);
-            }
-        }
+        #endregion
 
-        private void MainForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Control)
-            {
-                if (e.KeyCode == Keys.Z)
-                {
-                    drawingSheet.Undo();
-                }
-                else if (e.KeyCode == Keys.Y)
-                {
-                    drawingSheet.Redo();
-                }
-            }
-        }
+        #region Drawing tool settings
 
         private void foregroundColorButton_Click(object sender, EventArgs e)
         {
@@ -161,6 +170,59 @@ namespace GraphicEditor.View
             }
         }
 
+        private void thicknessToolStripCombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (sender is ToolStripComboBox cb)
+            {
+                if (drawingSheet != null)
+                    drawingSheet.DrawingData.Thickness = cb.SelectedIndex * 2 + 1;
+            }
+        }
+
+        private void drawingTool_ToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (sender is ToolStripToolButton btn)
+            {
+                try
+                {
+                    var selectedTool = tools[btn.Tool];
+
+                    if (selectedTool == null)
+                        throw new NullReferenceException();
+
+                    drawingSheet.SelectedTool = selectedTool;
+                    btn.Checked = true;
+                }
+                catch (NullReferenceException)
+                {
+                    MessageBox.Show("Tool exists but not implemented.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Cannot find tool.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        #endregion
+
+        #region History
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control)
+            {
+                if (e.KeyCode == Keys.Z)
+                {
+                    drawingSheet.Undo();
+                }
+                else if (e.KeyCode == Keys.Y)
+                {
+                    drawingSheet.Redo();
+                }
+            }
+        }
+
         private void undoToolStripButton_Click(object sender, EventArgs e)
         {
             drawingSheet.Undo();
@@ -171,22 +233,6 @@ namespace GraphicEditor.View
             drawingSheet.Redo();
         }
 
-        private void drawingTool_ToolStripButton_Click(object sender, EventArgs e)
-        {
-            if (sender is ToolStripToolButton btn)
-            {
-                drawingSheet.SetDrawingTool(btn.Tool);
-                btn.Checked = true;
-            }
-        }
-
-        private void thicknessToolStripCombobox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (sender is ToolStripComboBox cb)
-            {
-                if (drawingSheet != null)
-                    drawingSheet.DrawingData.Thickness = cb.SelectedIndex * 2 + 1;
-            }
-        }
+        #endregion
     }
 }

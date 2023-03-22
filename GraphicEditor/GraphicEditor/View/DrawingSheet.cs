@@ -63,7 +63,6 @@ namespace GraphicEditor.View
         public void Initialize()
         {
             ImageHistory = new History<Image>(Image.Clone() as Image);
-            SetDrawingTool(DrawingToolType.Pencil);
         }
 
         private Image GetEmptyImage(int width, int height)
@@ -76,27 +75,6 @@ namespace GraphicEditor.View
             }
 
             return img;
-        }
-
-        public void SetDrawingTool(DrawingToolType drawingToolType)
-        {
-            switch (drawingToolType)
-            {
-                case DrawingToolType.Pencil:
-                    SelectedTool = new Pencil();
-                    break;
-                case DrawingToolType.Line:
-                    SelectedTool = new LineFigure();
-                    break;
-                case DrawingToolType.Ellipse:
-                    SelectedTool = new EllipseFigure();
-                    break;
-                case DrawingToolType.Rectangle:
-                    SelectedTool = new RectangleFigure();
-                    break;
-                default:
-                    break;
-            }
         }
 
         public void SaveImageToFile(string filePath)
@@ -136,7 +114,7 @@ namespace GraphicEditor.View
         {
             DrawingData.StartPoint = startPoint;
 
-            SelectedTool.StartDrawingFrom(DrawingData);
+            SelectedTool.StartDrawing(DrawingData);
             ImageChanged?.Invoke(this, Image);
         }
 
