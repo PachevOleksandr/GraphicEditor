@@ -162,10 +162,11 @@ namespace GraphicEditor.View
             // 
             // thicknessToolStripComboBox
             // 
+            thicknessToolStripComboBox.CausesValidation = false;
+            thicknessToolStripComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             thicknessToolStripComboBox.Items.AddRange(new object[] { "1px", "3px", "5px", "7px" });
             thicknessToolStripComboBox.Name = "thicknessToolStripComboBox";
             thicknessToolStripComboBox.Size = new Size(75, 25);
-            thicknessToolStripComboBox.Sorted = true;
             thicknessToolStripComboBox.ToolTipText = "Thickness";
             thicknessToolStripComboBox.SelectedIndexChanged += thicknessToolStripCombobox_SelectedIndexChanged;
             // 
@@ -311,7 +312,6 @@ namespace GraphicEditor.View
             MainMenuStrip = menuStrip;
             Name = "MainForm";
             Text = "MainForm";
-            Load += MainForm_Load;
             KeyDown += MainForm_KeyDown;
             toolStrip.ResumeLayout(false);
             toolStrip.PerformLayout();

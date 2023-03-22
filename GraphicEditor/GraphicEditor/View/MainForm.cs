@@ -181,10 +181,5 @@ namespace GraphicEditor.View
                     drawingSheet.DrawingData.Thickness = cb.SelectedIndex * 2 + 1;
             }
         }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

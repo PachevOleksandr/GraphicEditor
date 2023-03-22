@@ -8,55 +8,53 @@ namespace GraphicEditor.Model
 {
     public class History<T>
     {
-        private readonly List<T> history;
-        private int index;
+        private readonly Stack<T> undoStack;
+        private readonly Stack<T> redoStack;
 
         public History(T firstElemet)
         {
-            history = new List<T> { firstElemet };
-            index = 0;
+            undoStack = new Stack<T>();
+            redoStack = new Stack<T>();
+
+            undoStack.Push(firstElemet);
         }
 
         public bool CanUndo()
         {
-            return index > 0;
+            return undoStack.Count > 1;
         }
 
         public T Undo()
         {
             if (CanUndo())
             {
-                return history[--index];
+                var item = undoStack.Pop();
+                redoStack.Push(item);
             }
 
-            return history[index];
+            return undoStack.Peek();
         }
 
         public bool CanRedo()
         {
-            return index < history.Count - 1;
+            return redoStack.Count > 0;
         }
 
         public T Redo()
         {
             if (CanRedo())
             {
-                return history[++index];
+                var item = redoStack.Pop();
+                undoStack.Push(item);
             }
 
-            return history[index];
+            return undoStack.Peek();
         }
 
         public void AddItem(T item)
         {
-            index++;
-
-            if (index <= history.Count - 1)
-            {
-                history.RemoveRange(index, history.Count - index);
-            }
-
-            history.Add(item);
+            redoStack.Clear();
+            undoStack.Push(item);
         }
     }
 }

@@ -47,7 +47,7 @@ namespace GraphicEditor.View
             DrawingData = new DrawingToolData();
 
             Image = GetEmptyImage(width, height);
-            ImageHistory = new History<Image>(Image);
+            ImageHistory = new History<Image>(Image.Clone() as Image);
 
             Initialize();
         }
@@ -57,7 +57,7 @@ namespace GraphicEditor.View
             DrawingData = new DrawingToolData();
 
             Image = image;
-            ImageHistory = new History<Image>(Image);
+            ImageHistory = new History<Image>(Image.Clone() as Image);
 
             Initialize();
         }
@@ -160,12 +160,12 @@ namespace GraphicEditor.View
 
         public void Undo()
         {
-            Image = ImageHistory.Undo();
+            Image = ImageHistory.Undo().Clone() as Image;
         }
 
         public void Redo()
         {
-            Image = ImageHistory.Redo();
+            Image = ImageHistory.Redo().Clone() as Image;
         }
 
         #endregion
