@@ -44,7 +44,14 @@ namespace GraphicEditor.View
         {
             base.OnLoad(e);
 
-            drawingSheet = new(resizablePanel.Width - 4, resizablePanel.Height - 4);
+            var data = new DrawingToolData
+            {
+                ForegroundColor = foregroundColorDialog.Color,
+                BackgroundColor = backgroundColorDialog.Color,
+                Thickness = thicknessToolStripComboBox.SelectedIndex * 2 + 1
+            };
+
+            drawingSheet = new(data, resizablePanel.Width - 4, resizablePanel.Height - 4);
             drawingSheet.ImageChanged += DrawingSheet_ImageChanged;
 
             drawingArea.Image = drawingSheet.Image;

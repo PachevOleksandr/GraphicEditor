@@ -40,31 +40,30 @@ namespace GraphicEditor.View
         }
 
         public IDrawingTool SelectedTool { get; set; }
-        public History<Image> ImageHistory { get; }
+        public History<Image> ImageHistory { get; private set; }
 
-        public DrawingSheet(int width, int height)
+        public DrawingSheet(DrawingToolData data, int width, int height)
         {
-            DrawingData = new DrawingToolData();
+            DrawingData = data;
 
             Image = GetEmptyImage(width, height);
-            ImageHistory = new History<Image>(Image.Clone() as Image);
 
             Initialize();
         }
 
-        public DrawingSheet(Image image)
+        public DrawingSheet(DrawingToolData data, Image image)
         {
-            DrawingData = new DrawingToolData();
+            DrawingData = data;
 
             Image = image;
-            ImageHistory = new History<Image>(Image.Clone() as Image);
 
             Initialize();
         }
 
-        private void Initialize()
+        public void Initialize()
         {
-            SelectedTool = new Pencil();
+            ImageHistory = new History<Image>(Image.Clone() as Image);
+            SetDrawingTool(DrawingToolType.Pencil);
         }
 
         private Image GetEmptyImage(int width, int height)

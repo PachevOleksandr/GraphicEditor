@@ -101,6 +101,8 @@ namespace GraphicEditor.View
             // 
             // pencilToolStripButton
             // 
+            pencilToolStripButton.Checked = true;
+            pencilToolStripButton.CheckState = CheckState.Checked;
             pencilToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
             pencilToolStripButton.GroupIndex = 1;
             pencilToolStripButton.Image = (Image)resources.GetObject("pencilToolStripButton.Image");
