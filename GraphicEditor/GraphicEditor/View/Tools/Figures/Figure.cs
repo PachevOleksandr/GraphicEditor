@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GraphicEditor.View.Tools.Figures
 {
-    internal abstract class Figure : IDrawingTool<DrawingToolData>
+    internal abstract class Figure : IDrawingTool
     {
         private Image? startState;
 

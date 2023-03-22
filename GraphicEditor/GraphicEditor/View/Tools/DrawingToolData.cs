@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GraphicEditor.View.Tools
 {
-    internal class DrawingToolData : IDrawingToolData
+    internal class DrawingToolData
     {
         public Image? Image { get; set; }
         public Color ForegroundColor { get; set; }

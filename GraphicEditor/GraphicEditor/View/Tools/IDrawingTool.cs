@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace GraphicEditor.View.Tools
 {
-    internal interface IDrawingTool<T> where T : class, IDrawingToolData
+    internal interface IDrawingTool
     {
-        public void StartDrawingFrom(T data);
-        public void DrawNext(T data);
+        public void StartDrawingFrom(DrawingToolData data);
+        public void DrawNext(DrawingToolData data);
     }
 }

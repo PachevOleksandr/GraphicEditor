@@ -38,7 +38,7 @@ namespace GraphicEditor.View
             get => Image.Height;
         }
 
-        public IDrawingTool<DrawingToolData> SelectedTool { get; set; }
+        public IDrawingTool SelectedTool { get; set; }
         public History<Image> ImageHistory { get; }
 
         public DrawingSheet(int width, int height)

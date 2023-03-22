@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GraphicEditor.View.Tools.ClassicalTools
 {
-    internal class Pencil : IDrawingTool<DrawingToolData>
+    internal class Pencil : IDrawingTool
     {
         private Point previousPoint;
 
