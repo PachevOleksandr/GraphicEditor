@@ -35,9 +35,14 @@ namespace GraphicEditor.View
             undoToolStripButton = new ToolStripButton();
             redoToolStripButton = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
-            lineToolStripToolButton = new ToolStripToolButton();
             pencilToolStripButton = new ToolStripToolButton();
+            toolStripSeparator3 = new ToolStripSeparator();
+            lineToolStripToolButton = new ToolStripToolButton();
+            rectangleToolStripToolButton = new ToolStripToolButton();
+            ellipseToolStripToolButton = new ToolStripToolButton();
             toolStripSeparator1 = new ToolStripSeparator();
+            thicknessToolStripComboBox = new ToolStripComboBox();
+            toolStripSeparator4 = new ToolStripSeparator();
             foregroundColorButton = new ToolStripButton();
             backgroundColorButton = new ToolStripButton();
             menuStrip = new MenuStrip();
@@ -52,9 +57,6 @@ namespace GraphicEditor.View
             mousePositionLabel = new Label();
             resizablePanel = new ResizablePanel();
             colorDialog = new ColorDialog();
-            ellipseToolStripToolButton = new ToolStripToolButton();
-            rectangleToolStripToolButton = new ToolStripToolButton();
-            toolStripSeparator3 = new ToolStripSeparator();
             toolStrip.SuspendLayout();
             menuStrip.SuspendLayout();
             infoPanel.SuspendLayout();
@@ -62,7 +64,7 @@ namespace GraphicEditor.View
             // 
             // toolStrip
             // 
-            toolStrip.Items.AddRange(new ToolStripItem[] { undoToolStripButton, redoToolStripButton, toolStripSeparator2, pencilToolStripButton, toolStripSeparator3, lineToolStripToolButton, rectangleToolStripToolButton, ellipseToolStripToolButton, toolStripSeparator1, foregroundColorButton, backgroundColorButton });
+            toolStrip.Items.AddRange(new ToolStripItem[] { undoToolStripButton, redoToolStripButton, toolStripSeparator2, pencilToolStripButton, toolStripSeparator3, lineToolStripToolButton, rectangleToolStripToolButton, ellipseToolStripToolButton, toolStripSeparator1, thicknessToolStripComboBox, toolStripSeparator4, foregroundColorButton, backgroundColorButton });
             toolStrip.Location = new Point(0, 24);
             toolStrip.Name = "toolStrip";
             toolStrip.Size = new Size(800, 25);
@@ -96,6 +98,23 @@ namespace GraphicEditor.View
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(6, 25);
             // 
+            // pencilToolStripButton
+            // 
+            pencilToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            pencilToolStripButton.GroupIndex = 1;
+            pencilToolStripButton.Image = (Image)resources.GetObject("pencilToolStripButton.Image");
+            pencilToolStripButton.ImageTransparentColor = Color.Magenta;
+            pencilToolStripButton.Name = "pencilToolStripButton";
+            pencilToolStripButton.Size = new Size(23, 22);
+            pencilToolStripButton.Text = "toolStripButton1";
+            pencilToolStripButton.ToolTipText = "Pencil";
+            pencilToolStripButton.Click += drawingTool_ToolStripButton_Click;
+            // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new Size(6, 25);
+            // 
             // lineToolStripToolButton
             // 
             lineToolStripToolButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -109,22 +128,50 @@ namespace GraphicEditor.View
             lineToolStripToolButton.ToolTipText = "Line";
             lineToolStripToolButton.Click += drawingTool_ToolStripButton_Click;
             // 
-            // pencilToolStripButton
+            // rectangleToolStripToolButton
             // 
-            pencilToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            pencilToolStripButton.GroupIndex = 1;
-            pencilToolStripButton.Image = (Image)resources.GetObject("pencilToolStripButton.Image");
-            pencilToolStripButton.ImageTransparentColor = Color.Magenta;
-            pencilToolStripButton.Name = "pencilToolStripButton";
-            pencilToolStripButton.Size = new Size(23, 22);
-            pencilToolStripButton.Text = "toolStripButton1";
-            pencilToolStripButton.ToolTipText = "Pencil";
-            pencilToolStripButton.Click += drawingTool_ToolStripButton_Click;
+            rectangleToolStripToolButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            rectangleToolStripToolButton.GroupIndex = 1;
+            rectangleToolStripToolButton.Image = (Image)resources.GetObject("rectangleToolStripToolButton.Image");
+            rectangleToolStripToolButton.ImageTransparentColor = Color.Magenta;
+            rectangleToolStripToolButton.Name = "rectangleToolStripToolButton";
+            rectangleToolStripToolButton.Size = new Size(23, 22);
+            rectangleToolStripToolButton.Text = "toolStripButton1";
+            rectangleToolStripToolButton.Tool = Tools.DrawingToolType.Rectangle;
+            rectangleToolStripToolButton.ToolTipText = "Rectangle";
+            rectangleToolStripToolButton.Click += drawingTool_ToolStripButton_Click;
+            // 
+            // ellipseToolStripToolButton
+            // 
+            ellipseToolStripToolButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            ellipseToolStripToolButton.GroupIndex = 1;
+            ellipseToolStripToolButton.Image = (Image)resources.GetObject("ellipseToolStripToolButton.Image");
+            ellipseToolStripToolButton.ImageTransparentColor = Color.Magenta;
+            ellipseToolStripToolButton.Name = "ellipseToolStripToolButton";
+            ellipseToolStripToolButton.Size = new Size(23, 22);
+            ellipseToolStripToolButton.Text = "toolStripButton1";
+            ellipseToolStripToolButton.Tool = Tools.DrawingToolType.Ellipse;
+            ellipseToolStripToolButton.ToolTipText = "Ellipse";
+            ellipseToolStripToolButton.Click += drawingTool_ToolStripButton_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
             toolStripSeparator1.Size = new Size(6, 25);
+            // 
+            // thicknessToolStripComboBox
+            // 
+            thicknessToolStripComboBox.Items.AddRange(new object[] { "1px", "3px", "5px", "7px" });
+            thicknessToolStripComboBox.Name = "thicknessToolStripComboBox";
+            thicknessToolStripComboBox.Size = new Size(75, 25);
+            thicknessToolStripComboBox.Sorted = true;
+            thicknessToolStripComboBox.ToolTipText = "Thickness";
+            thicknessToolStripComboBox.SelectedIndexChanged += thicknessToolStripCombobox_SelectedIndexChanged;
+            // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(6, 25);
             // 
             // foregroundColorButton
             // 
@@ -241,37 +288,6 @@ namespace GraphicEditor.View
             resizablePanel.TabIndex = 5;
             resizablePanel.Text = "resizableControl1";
             // 
-            // ellipseToolStripToolButton
-            // 
-            ellipseToolStripToolButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            ellipseToolStripToolButton.GroupIndex = 1;
-            ellipseToolStripToolButton.Image = (Image)resources.GetObject("ellipseToolStripToolButton.Image");
-            ellipseToolStripToolButton.ImageTransparentColor = Color.Magenta;
-            ellipseToolStripToolButton.Name = "ellipseToolStripToolButton";
-            ellipseToolStripToolButton.Size = new Size(23, 22);
-            ellipseToolStripToolButton.Text = "toolStripButton1";
-            ellipseToolStripToolButton.Tool = Tools.DrawingToolType.Ellipse;
-            ellipseToolStripToolButton.ToolTipText = "Ellipse";
-            ellipseToolStripToolButton.Click += drawingTool_ToolStripButton_Click;
-            // 
-            // rectangleToolStripToolButton
-            // 
-            rectangleToolStripToolButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            rectangleToolStripToolButton.GroupIndex = 1;
-            rectangleToolStripToolButton.Image = (Image)resources.GetObject("rectangleToolStripToolButton.Image");
-            rectangleToolStripToolButton.ImageTransparentColor = Color.Magenta;
-            rectangleToolStripToolButton.Name = "rectangleToolStripToolButton";
-            rectangleToolStripToolButton.Size = new Size(23, 22);
-            rectangleToolStripToolButton.Text = "toolStripButton1";
-            rectangleToolStripToolButton.Tool = Tools.DrawingToolType.Rectangle;
-            rectangleToolStripToolButton.ToolTipText = "Rectangle";
-            rectangleToolStripToolButton.Click += drawingTool_ToolStripButton_Click;
-            // 
-            // toolStripSeparator3
-            // 
-            toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(6, 25);
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -323,5 +339,7 @@ namespace GraphicEditor.View
         private ToolStripToolButton rectangleToolStripToolButton;
         private ToolStripToolButton ellipseToolStripToolButton;
         private ToolStripSeparator toolStripSeparator3;
+        private ToolStripComboBox thicknessToolStripComboBox;
+        private ToolStripSeparator toolStripSeparator4;
     }
 }

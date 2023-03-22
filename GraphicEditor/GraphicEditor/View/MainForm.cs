@@ -36,6 +36,8 @@ namespace GraphicEditor.View
 #pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
 
             resizablePanel.Controls.Add(drawingArea);
+
+            thicknessToolStripComboBox.SelectedIndex = 0;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -168,6 +170,15 @@ namespace GraphicEditor.View
             {
                 drawingSheet.SetDrawingTool(btn.Tool);
                 btn.Checked = true;
+            }
+        }
+
+        private void thicknessToolStripCombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (sender is ToolStripComboBox cb)
+            {
+                if (drawingSheet != null)
+                    drawingSheet.DrawingData.Thickness = cb.SelectedIndex * 2 + 1;
             }
         }
     }
