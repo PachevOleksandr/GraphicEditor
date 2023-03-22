@@ -1,6 +1,7 @@
 ﻿using GraphicEditor.Model;
 using GraphicEditor.View.Tools;
 using GraphicEditor.View.Tools.ClassicalTools;
+using GraphicEditor.View.Tools.Figures;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -76,6 +77,27 @@ namespace GraphicEditor.View
             }
 
             return img;
+        }
+
+        public void SetDrawingTool(DrawingToolType drawingToolType)
+        {
+            switch (drawingToolType)
+            {
+                case DrawingToolType.Pencil:
+                    SelectedTool = new Pencil();
+                    break;
+                case DrawingToolType.Line:
+                    SelectedTool = new LineFigure();
+                    break;
+                case DrawingToolType.Ellipse:
+                    SelectedTool = new EllipseFigure();
+                    break;
+                case DrawingToolType.Rectangle:
+                    SelectedTool = new RectangleFigure();
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void SaveImageToFile(string filePath)

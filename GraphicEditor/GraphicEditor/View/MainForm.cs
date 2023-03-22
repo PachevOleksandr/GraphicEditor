@@ -1,4 +1,5 @@
 ﻿using GraphicEditor.Model;
+using GraphicEditor.View.Controls;
 using GraphicEditor.View.Tools;
 using System;
 using System.Collections.Generic;
@@ -159,6 +160,15 @@ namespace GraphicEditor.View
         private void redoToolStripButton_Click(object sender, EventArgs e)
         {
             drawingSheet.Redo();
+        }
+
+        private void drawingTool_ToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (sender is ToolStripToolButton btn)
+            {
+                drawingSheet.SetDrawingTool(btn.Tool);
+                btn.Checked = true;
+            }
         }
     }
 }
