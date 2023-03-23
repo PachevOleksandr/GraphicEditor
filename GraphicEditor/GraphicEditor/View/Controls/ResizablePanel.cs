@@ -89,6 +89,9 @@ namespace GraphicEditor.View.Controls
         public ResizablePanel()
         {
             InitializeComponent();
+
+            BorderThickness = 2;
+            ResizeDirections = ResizeDirection.All;
         }
 
         private void UpdatePadding()
