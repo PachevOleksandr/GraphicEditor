@@ -5,7 +5,10 @@ using GraphicEditor.View.Tools.Figures;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -104,6 +107,33 @@ namespace GraphicEditor.View
             }
 
             Image = newImg;
+            ImageHistory.AddItem(Image.Clone() as Image);
+        }
+
+        public void InvertImage()
+        {
+            var bmp = new Bitmap(Image);
+
+            var bits = bmp.LockBits(new Rectangle(Point.Empty, bmp.Size),
+                                    ImageLockMode.ReadWrite,
+                                    bmp.PixelFormat);
+
+            int pixelSize = bmp.PixelFormat == PixelFormat.Format32bppArgb ? 4 : 3;
+
+            var bytes = new byte[bits.Height * bits.Stride];
+            Marshal.Copy(bits.Scan0, bytes, 0, bytes.Length);
+
+            for (int i = 0; i < bytes.Length; i += pixelSize)
+            {
+                bytes[i] = (byte)Math.Abs(bytes[i] - 255);
+                bytes[i + 1] = (byte)Math.Abs(bytes[i + 1] - 255);
+                bytes[i + 2] = (byte)Math.Abs(bytes[i + 2] - 255);
+            }
+
+            Marshal.Copy(bytes, 0, bits.Scan0, bytes.Length);
+
+            Image = bmp;
+
             ImageHistory.AddItem(Image.Clone() as Image);
         }
 

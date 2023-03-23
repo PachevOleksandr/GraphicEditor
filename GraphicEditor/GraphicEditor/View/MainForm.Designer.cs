@@ -61,6 +61,7 @@ namespace GraphicEditor.View
             resizablePanel = new ResizablePanel();
             foregroundColorDialog = new ColorDialog();
             backgroundColorDialog = new ColorDialog();
+            invertToolStripButton = new ToolStripButton();
             toolStrip.SuspendLayout();
             menuStrip.SuspendLayout();
             infoPanel.SuspendLayout();
@@ -68,7 +69,7 @@ namespace GraphicEditor.View
             // 
             // toolStrip
             // 
-            toolStrip.Items.AddRange(new ToolStripItem[] { clearToolStripButton, toolStripSeparator5, undoToolStripButton, redoToolStripButton, toolStripSeparator2, textToolStripToolButton, pencilToolStripButton, toolStripSeparator3, lineToolStripToolButton, rectangleToolStripToolButton, ellipseToolStripToolButton, fillFigureToolStripButton, toolStripSeparator1, thicknessToolStripComboBox, toolStripSeparator4, foregroundColorButton, backgroundColorButton });
+            toolStrip.Items.AddRange(new ToolStripItem[] { invertToolStripButton, clearToolStripButton, toolStripSeparator5, undoToolStripButton, redoToolStripButton, toolStripSeparator2, textToolStripToolButton, pencilToolStripButton, toolStripSeparator3, lineToolStripToolButton, rectangleToolStripToolButton, ellipseToolStripToolButton, fillFigureToolStripButton, toolStripSeparator1, thicknessToolStripComboBox, toolStripSeparator4, foregroundColorButton, backgroundColorButton });
             toolStrip.Location = new Point(0, 24);
             toolStrip.Name = "toolStrip";
             toolStrip.Size = new Size(800, 25);
@@ -344,6 +345,17 @@ namespace GraphicEditor.View
             backgroundColorDialog.Color = Color.White;
             backgroundColorDialog.FullOpen = true;
             // 
+            // invertToolStripButton
+            // 
+            invertToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            invertToolStripButton.Image = (Image)resources.GetObject("invertToolStripButton.Image");
+            invertToolStripButton.ImageTransparentColor = Color.Magenta;
+            invertToolStripButton.Name = "invertToolStripButton";
+            invertToolStripButton.Size = new Size(23, 22);
+            invertToolStripButton.Text = "toolStripButton1";
+            invertToolStripButton.ToolTipText = "Invert";
+            invertToolStripButton.Click += invertToolStripButton_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -400,5 +412,6 @@ namespace GraphicEditor.View
         private ToolStripButton clearToolStripButton;
         private ToolStripSeparator toolStripSeparator5;
         private ToolStripButton fillFigureToolStripButton;
+        private ToolStripButton invertToolStripButton;
     }
 }

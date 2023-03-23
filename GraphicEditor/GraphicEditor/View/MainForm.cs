@@ -295,5 +295,10 @@ namespace GraphicEditor.View
         }
 
         #endregion
+
+        private void invertToolStripButton_Click(object sender, EventArgs e)
+        {
+            drawingSheet.InvertImage();
+        }
     }
 }
