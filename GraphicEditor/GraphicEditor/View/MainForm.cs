@@ -175,7 +175,7 @@ namespace GraphicEditor.View
         {
             mousePositionLabel.Text = $"Position: {e.X}, {e.Y}";
 
-            if (e.Button == MouseButtons.Left)
+            if (drawingSheet.SelectedTool.Executing)
             {
                 drawingSheet.Draw(new Point(e.X, e.Y));
             }
