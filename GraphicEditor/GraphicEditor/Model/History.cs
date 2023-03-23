@@ -56,5 +56,13 @@ namespace GraphicEditor.Model
             redoStack.Clear();
             undoStack.Push(item);
         }
+
+        public void Clear(T firstElemet)
+        {
+            undoStack.Clear();
+            redoStack.Clear();
+
+            undoStack.Push(firstElemet);
+        }
     }
 }

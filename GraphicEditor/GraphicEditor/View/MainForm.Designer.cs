@@ -32,6 +32,8 @@ namespace GraphicEditor.View
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             toolStrip = new ToolStrip();
+            clearToolStripButton = new ToolStripButton();
+            toolStripSeparator5 = new ToolStripSeparator();
             undoToolStripButton = new ToolStripButton();
             redoToolStripButton = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
@@ -66,12 +68,28 @@ namespace GraphicEditor.View
             // 
             // toolStrip
             // 
-            toolStrip.Items.AddRange(new ToolStripItem[] { undoToolStripButton, redoToolStripButton, toolStripSeparator2, textToolStripToolButton, pencilToolStripButton, toolStripSeparator3, lineToolStripToolButton, rectangleToolStripToolButton, ellipseToolStripToolButton, toolStripSeparator1, thicknessToolStripComboBox, toolStripSeparator4, foregroundColorButton, backgroundColorButton });
+            toolStrip.Items.AddRange(new ToolStripItem[] { clearToolStripButton, toolStripSeparator5, undoToolStripButton, redoToolStripButton, toolStripSeparator2, textToolStripToolButton, pencilToolStripButton, toolStripSeparator3, lineToolStripToolButton, rectangleToolStripToolButton, ellipseToolStripToolButton, toolStripSeparator1, thicknessToolStripComboBox, toolStripSeparator4, foregroundColorButton, backgroundColorButton });
             toolStrip.Location = new Point(0, 24);
             toolStrip.Name = "toolStrip";
             toolStrip.Size = new Size(800, 25);
             toolStrip.TabIndex = 1;
             toolStrip.Text = "toolStrip1";
+            // 
+            // clearToolStripButton
+            // 
+            clearToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            clearToolStripButton.Image = (Image)resources.GetObject("clearToolStripButton.Image");
+            clearToolStripButton.ImageTransparentColor = Color.Magenta;
+            clearToolStripButton.Name = "clearToolStripButton";
+            clearToolStripButton.Size = new Size(23, 22);
+            clearToolStripButton.Text = "toolStripButton1";
+            clearToolStripButton.ToolTipText = "Clear";
+            clearToolStripButton.Click += clearToolStripButton_Click;
+            // 
+            // toolStripSeparator5
+            // 
+            toolStripSeparator5.Name = "toolStripSeparator5";
+            toolStripSeparator5.Size = new Size(6, 25);
             // 
             // undoToolStripButton
             // 
@@ -235,7 +253,7 @@ namespace GraphicEditor.View
             // 
             openToolStripMenuItem.Name = "openToolStripMenuItem";
             openToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.O;
-            openToolStripMenuItem.Size = new Size(146, 22);
+            openToolStripMenuItem.Size = new Size(180, 22);
             openToolStripMenuItem.Text = "Open";
             openToolStripMenuItem.Click += openToolStripMenuItem_Click;
             // 
@@ -243,13 +261,14 @@ namespace GraphicEditor.View
             // 
             saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             saveToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
-            saveToolStripMenuItem.Size = new Size(146, 22);
+            saveToolStripMenuItem.Size = new Size(180, 22);
             saveToolStripMenuItem.Text = "Save";
+            saveToolStripMenuItem.Click += saveToolStripMenuItem_Click;
             // 
             // saveAsToolStripMenuItem
             // 
             saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            saveAsToolStripMenuItem.Size = new Size(146, 22);
+            saveAsToolStripMenuItem.Size = new Size(180, 22);
             saveAsToolStripMenuItem.Text = "Save as";
             // 
             // openFileDialog
@@ -298,7 +317,7 @@ namespace GraphicEditor.View
             // 
             // resizablePanel
             // 
-            resizablePanel.BackColor = SystemColors.ActiveCaption;
+            resizablePanel.BackColor = SystemColors.AppWorkspace;
             resizablePanel.BorderColor = Color.Gray;
             resizablePanel.BorderThickness = 3;
             resizablePanel.Location = new Point(0, 52);
@@ -375,5 +394,7 @@ namespace GraphicEditor.View
         private ToolStripSeparator toolStripSeparator4;
         private ColorDialog backgroundColorDialog;
         private ToolStripToolButton textToolStripToolButton;
+        private ToolStripButton clearToolStripButton;
+        private ToolStripSeparator toolStripSeparator5;
     }
 }

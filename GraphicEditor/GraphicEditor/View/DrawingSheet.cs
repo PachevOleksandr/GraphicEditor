@@ -77,6 +77,17 @@ namespace GraphicEditor.View
             return img;
         }
 
+        public void Clear()
+        {
+            using (var graphics = Graphics.FromImage(Image))
+            {
+                graphics.Clear(DrawingData.BackgroundColor);
+            }
+
+            ImageHistory.Clear(Image.Clone() as Image);
+            ImageChanged?.Invoke(this, Image);
+        }
+
         public void SaveImageToFile(string filePath)
         {
             Image.Save(filePath);
@@ -89,10 +100,12 @@ namespace GraphicEditor.View
 
             using (var graphic = Graphics.FromImage(tmpBmp))
             {
+                graphic.Clear(DrawingData.BackgroundColor);
                 graphic.DrawImage(newImage, 0, 0);
             }
 
-            Image = newImage;
+            Image = tmpBmp;
+            ImageChanged?.Invoke(this, Image);
         }
 
         public void Resize(int width, int height)
@@ -106,6 +119,7 @@ namespace GraphicEditor.View
             }
 
             Image = newImg;
+            ImageHistory.AddItem(Image.Clone() as Image);
         }
 
         #region Drawing

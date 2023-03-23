@@ -27,7 +27,9 @@ namespace GraphicEditor.View
         {
             InitializeComponent();
 
+#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
             resizablePanel.Resized += drawingArea_SizeChanged;
+#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
 
             drawingArea = new PictureBox()
             {
@@ -95,6 +97,9 @@ namespace GraphicEditor.View
 
         private void DrawingSheet_ImageChanged(object sender, Image image)
         {
+            resizablePanel.Width = image.Width + resizablePanel.Padding.Right + resizablePanel.Padding.Left;
+            resizablePanel.Height = image.Height + resizablePanel.Padding.Top + resizablePanel.Padding.Bottom;
+
             drawingArea.Image = image;
         }
 
@@ -102,10 +107,22 @@ namespace GraphicEditor.View
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openFileDialog.Filter = "Default image files|*.bmp|Pictures |*.png;";
+            openFileDialog.Filter = "All|*.bmp;*png|" +
+                                    "Default image files|*.bmp|" +
+                                    "Pictures|*.png;";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 drawingSheet.LoadImageFromFile(openFileDialog.FileName);
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog.Filter = "Default image files|*.bmp|" +
+                                    "Pictures|*.png;";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                drawingSheet.SaveImageToFile(saveFileDialog.FileName);
             }
         }
 
@@ -249,5 +266,10 @@ namespace GraphicEditor.View
         }
 
         #endregion
+
+        private void clearToolStripButton_Click(object sender, EventArgs e)
+        {
+            drawingSheet.Clear();
+        }
     }
 }
