@@ -65,6 +65,10 @@ namespace GraphicEditor.View
 
             thicknessToolStripComboBox.Items.AddRange(thicknessValues.ToArray());
             thicknessToolStripComboBox.SelectedIndex = 0;
+
+            inversionBackgroundWorker.ProgressChanged += InversionBackgroundWorker_ProgressChanged;
+            inversionBackgroundWorker.RunWorkerCompleted += InversionBackgroundWorker_RunWorkerCompleted;
+            inversionBackgroundWorker.DoWork += InversionBackgroundWorker_DoWork;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -296,9 +300,33 @@ namespace GraphicEditor.View
 
         #endregion
 
+        #region Inversion
+
+        private Image invertedImage;
+
         private void invertToolStripButton_Click(object sender, EventArgs e)
         {
-            drawingSheet.InvertImage();
+            disableDrawingPanel.Show();
+            inversionBackgroundWorker.RunWorkerAsync();
         }
+
+        private void InversionBackgroundWorker_DoWork(object? sender, DoWorkEventArgs e)
+        {
+            invertedImage = drawingSheet.InvertImage(percentage => inversionBackgroundWorker.ReportProgress(percentage), drawingSheet.Image);
+        }
+
+        private void InversionBackgroundWorker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
+        {
+            disableDrawingPanel.Hide();
+            drawingSheet.Image = invertedImage;
+            drawingSheet.ImageHistory.AddItem(invertedImage.Clone() as Image);
+        }
+
+        private void InversionBackgroundWorker_ProgressChanged(object? sender, ProgressChangedEventArgs e)
+        {
+            invertionProgressBar.Value = e.ProgressPercentage;
+        }
+
+        #endregion
     }
 }

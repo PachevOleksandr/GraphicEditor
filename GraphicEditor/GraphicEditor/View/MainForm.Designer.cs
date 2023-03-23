@@ -32,6 +32,7 @@ namespace GraphicEditor.View
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             toolStrip = new ToolStrip();
+            invertToolStripButton = new ToolStripButton();
             clearToolStripButton = new ToolStripButton();
             toolStripSeparator5 = new ToolStripSeparator();
             undoToolStripButton = new ToolStripButton();
@@ -59,12 +60,17 @@ namespace GraphicEditor.View
             imageSizeInfoLabel = new Label();
             mousePositionLabel = new Label();
             resizablePanel = new ResizablePanel();
+            disableDrawingPanel = new Panel();
+            inversionLabel = new Label();
+            invertionProgressBar = new ProgressBar();
             foregroundColorDialog = new ColorDialog();
             backgroundColorDialog = new ColorDialog();
-            invertToolStripButton = new ToolStripButton();
+            inversionBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             toolStrip.SuspendLayout();
             menuStrip.SuspendLayout();
             infoPanel.SuspendLayout();
+            resizablePanel.SuspendLayout();
+            disableDrawingPanel.SuspendLayout();
             SuspendLayout();
             // 
             // toolStrip
@@ -75,6 +81,17 @@ namespace GraphicEditor.View
             toolStrip.Size = new Size(800, 25);
             toolStrip.TabIndex = 1;
             toolStrip.Text = "toolStrip1";
+            // 
+            // invertToolStripButton
+            // 
+            invertToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            invertToolStripButton.Image = (Image)resources.GetObject("invertToolStripButton.Image");
+            invertToolStripButton.ImageTransparentColor = Color.Magenta;
+            invertToolStripButton.Name = "invertToolStripButton";
+            invertToolStripButton.Size = new Size(23, 22);
+            invertToolStripButton.Text = "toolStripButton1";
+            invertToolStripButton.ToolTipText = "Invert";
+            invertToolStripButton.Click += invertToolStripButton_Click;
             // 
             // clearToolStripButton
             // 
@@ -325,6 +342,7 @@ namespace GraphicEditor.View
             resizablePanel.BackColor = SystemColors.AppWorkspace;
             resizablePanel.BorderColor = Color.Gray;
             resizablePanel.BorderThickness = 3;
+            resizablePanel.Controls.Add(disableDrawingPanel);
             resizablePanel.Cursor = Cursors.Cross;
             resizablePanel.Location = new Point(0, 52);
             resizablePanel.MinimumSize = new Size(6, 6);
@@ -334,6 +352,33 @@ namespace GraphicEditor.View
             resizablePanel.Size = new Size(800, 370);
             resizablePanel.TabIndex = 5;
             resizablePanel.Text = "resizableControl1";
+            // 
+            // disableDrawingPanel
+            // 
+            disableDrawingPanel.Controls.Add(inversionLabel);
+            disableDrawingPanel.Controls.Add(invertionProgressBar);
+            disableDrawingPanel.Dock = DockStyle.Fill;
+            disableDrawingPanel.Location = new Point(0, 0);
+            disableDrawingPanel.Name = "disableDrawingPanel";
+            disableDrawingPanel.Size = new Size(797, 367);
+            disableDrawingPanel.TabIndex = 0;
+            disableDrawingPanel.Visible = false;
+            // 
+            // inversionLabel
+            // 
+            inversionLabel.AutoSize = true;
+            inversionLabel.Location = new Point(3, 3);
+            inversionLabel.Name = "inversionLabel";
+            inversionLabel.Size = new Size(93, 15);
+            inversionLabel.TabIndex = 1;
+            inversionLabel.Text = "Color inversion..";
+            // 
+            // invertionProgressBar
+            // 
+            invertionProgressBar.Location = new Point(3, 21);
+            invertionProgressBar.Name = "invertionProgressBar";
+            invertionProgressBar.Size = new Size(791, 23);
+            invertionProgressBar.TabIndex = 0;
             // 
             // foregroundColorDialog
             // 
@@ -345,16 +390,9 @@ namespace GraphicEditor.View
             backgroundColorDialog.Color = Color.White;
             backgroundColorDialog.FullOpen = true;
             // 
-            // invertToolStripButton
+            // inversionBackgroundWorker
             // 
-            invertToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            invertToolStripButton.Image = (Image)resources.GetObject("invertToolStripButton.Image");
-            invertToolStripButton.ImageTransparentColor = Color.Magenta;
-            invertToolStripButton.Name = "invertToolStripButton";
-            invertToolStripButton.Size = new Size(23, 22);
-            invertToolStripButton.Text = "toolStripButton1";
-            invertToolStripButton.ToolTipText = "Invert";
-            invertToolStripButton.Click += invertToolStripButton_Click;
+            inversionBackgroundWorker.WorkerReportsProgress = true;
             // 
             // MainForm
             // 
@@ -373,6 +411,9 @@ namespace GraphicEditor.View
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
             infoPanel.ResumeLayout(false);
+            resizablePanel.ResumeLayout(false);
+            disableDrawingPanel.ResumeLayout(false);
+            disableDrawingPanel.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -413,5 +454,9 @@ namespace GraphicEditor.View
         private ToolStripSeparator toolStripSeparator5;
         private ToolStripButton fillFigureToolStripButton;
         private ToolStripButton invertToolStripButton;
+        private Panel disableDrawingPanel;
+        private Label inversionLabel;
+        private ProgressBar invertionProgressBar;
+        private System.ComponentModel.BackgroundWorker inversionBackgroundWorker;
     }
 }

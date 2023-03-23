@@ -25,7 +25,7 @@ namespace GraphicEditor.View
         public Image Image
         {
             get => DrawingData.Image;
-            private set
+            set
             {
                 DrawingData.Image = value;
                 ImageChanged?.Invoke(this, DrawingData.Image);
@@ -110,9 +110,9 @@ namespace GraphicEditor.View
             ImageHistory.AddItem(Image.Clone() as Image);
         }
 
-        public void InvertImage()
+        public Image InvertImage(Action<int> notifyPercentageChanged, Image image)
         {
-            var bmp = new Bitmap(Image);
+            var bmp = new Bitmap(image);
 
             var bits = bmp.LockBits(new Rectangle(Point.Empty, bmp.Size),
                                     ImageLockMode.ReadWrite,
@@ -123,18 +123,28 @@ namespace GraphicEditor.View
             var bytes = new byte[bits.Height * bits.Stride];
             Marshal.Copy(bits.Scan0, bytes, 0, bytes.Length);
 
+            int percentage = 0;
+
             for (int i = 0; i < bytes.Length; i += pixelSize)
             {
                 bytes[i] = (byte)Math.Abs(bytes[i] - byte.MaxValue);
                 bytes[i + 1] = (byte)Math.Abs(bytes[i + 1] - byte.MaxValue);
                 bytes[i + 2] = (byte)Math.Abs(bytes[i + 2] - byte.MaxValue);
+
+                int p = (int)((float)i / bytes.Length * 100);
+
+                if (p != percentage)
+                {
+                    percentage = p;
+                    notifyPercentageChanged(percentage);
+
+                    Thread.Sleep(100);
+                }
             }
 
             Marshal.Copy(bytes, 0, bits.Scan0, bytes.Length);
 
-            Image = bmp;
-
-            ImageHistory.AddItem(Image.Clone() as Image);
+            return bmp;
         }
 
         #region Drawing
