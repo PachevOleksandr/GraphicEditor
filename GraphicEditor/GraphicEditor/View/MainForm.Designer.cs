@@ -299,8 +299,10 @@ namespace GraphicEditor.View
             // resizablePanel
             // 
             resizablePanel.BackColor = SystemColors.ActiveCaption;
+            resizablePanel.BorderColor = Color.Gray;
             resizablePanel.BorderThickness = 3;
             resizablePanel.Location = new Point(0, 52);
+            resizablePanel.MinimumSize = new Size(6, 6);
             resizablePanel.Name = "resizablePanel";
             resizablePanel.Padding = new Padding(0, 0, 3, 3);
             resizablePanel.ResizeDirections = ResizablePanel.ResizeDirection.Right | ResizablePanel.ResizeDirection.Bottom;

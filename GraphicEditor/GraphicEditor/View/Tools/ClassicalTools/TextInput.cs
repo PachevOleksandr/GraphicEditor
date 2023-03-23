@@ -1,16 +1,19 @@
-﻿using System;
+﻿using GraphicEditor.View.Controls;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace GraphicEditor.View.Tools.ClassicalTools
 {
     internal class TextInput : DrawingTool
     {
         private readonly PictureBox pictureBox;
-        private TextBox textBox;
+        private TransparentTextBox textBox;
 
         public string Text => textBox.Text;
 
@@ -25,17 +28,25 @@ namespace GraphicEditor.View.Tools.ClassicalTools
         {
             base.StartDrawing(data);
 
-            textBox = new TextBox();
+            textBox = new TransparentTextBox();
             textBox.Parent = pictureBox;
             textBox.Multiline = true;
+            textBox.AutoSize = true;
             textBox.BorderStyle = BorderStyle.None;
             textBox.Location = data.StartPoint;
             textBox.Font = data.Font;
             textBox.ForeColor = data.ForegroundColor;
-            textBox.BackColor = data.BackgroundColor;
+            textBox.Size = TextRenderer.MeasureText(" ", textBox.Font);
+
+            textBox.TextChanged += TextBox_TextChanged;
 
             textBox.Show();
             textBox.Focus();
+        }
+
+        private void TextBox_TextChanged(object? sender, EventArgs e)
+        {
+            textBox.Size = TextRenderer.MeasureText(textBox.Text, textBox.Font);
         }
 
         public override void DrawNext(DrawingToolData data)
@@ -56,7 +67,7 @@ namespace GraphicEditor.View.Tools.ClassicalTools
             }
 
             textBox.IsAccessible = false;
-            textBox.Dispose();
+            textBox.Hide();
         }
     }
 }

@@ -102,7 +102,7 @@ namespace GraphicEditor.View
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openFileDialog.Filter = "Default image files|*.bmp;";
+            openFileDialog.Filter = "Default image files|*.bmp|Pictures |*.png;";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 drawingSheet.LoadImageFromFile(openFileDialog.FileName);
