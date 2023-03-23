@@ -125,9 +125,9 @@ namespace GraphicEditor.View
 
             for (int i = 0; i < bytes.Length; i += pixelSize)
             {
-                bytes[i] = (byte)Math.Abs(bytes[i] - 255);
-                bytes[i + 1] = (byte)Math.Abs(bytes[i + 1] - 255);
-                bytes[i + 2] = (byte)Math.Abs(bytes[i + 2] - 255);
+                bytes[i] = (byte)Math.Abs(bytes[i] - byte.MaxValue);
+                bytes[i + 1] = (byte)Math.Abs(bytes[i + 1] - byte.MaxValue);
+                bytes[i + 2] = (byte)Math.Abs(bytes[i + 2] - byte.MaxValue);
             }
 
             Marshal.Copy(bytes, 0, bits.Scan0, bytes.Length);
