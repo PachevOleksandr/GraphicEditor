@@ -103,6 +103,20 @@ namespace GraphicEditor.View
             drawingArea.Image = image;
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.Z))
+            {
+                drawingSheet.Undo();
+            }
+            else if (keyData == (Keys.Control | Keys.Y))
+            {
+                drawingSheet.Redo();
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         #region Work with files
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -239,21 +253,6 @@ namespace GraphicEditor.View
         #endregion
 
         #region History
-
-        private void MainForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Control)
-            {
-                if (e.KeyCode == Keys.Z)
-                {
-                    drawingSheet.Undo();
-                }
-                else if (e.KeyCode == Keys.Y)
-                {
-                    drawingSheet.Redo();
-                }
-            }
-        }
 
         private void undoToolStripButton_Click(object sender, EventArgs e)
         {
