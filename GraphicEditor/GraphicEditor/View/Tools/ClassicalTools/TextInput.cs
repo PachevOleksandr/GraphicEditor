@@ -53,7 +53,6 @@ namespace GraphicEditor.View.Tools.ClassicalTools
         {
             textBox.Font = data.Font;
             textBox.ForeColor = data.ForegroundColor;
-            textBox.BackColor = data.BackgroundColor;
         }
 
         public override void FinishDrawing(DrawingToolData data)

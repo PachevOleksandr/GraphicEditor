@@ -23,6 +23,8 @@ namespace GraphicEditor.View
 
         private Dictionary<DrawingToolType, IDrawingTool> tools;
 
+        private List<ThicknessValue> thicknessValues;
+
         public MainForm()
         {
             InitializeComponent();
@@ -44,8 +46,6 @@ namespace GraphicEditor.View
 
             resizablePanel.Controls.Add(drawingArea);
 
-            thicknessToolStripComboBox.SelectedIndex = 0;
-
             tools = new()
             {
                 { DrawingToolType.Pencil, new Pencil() },
@@ -54,6 +54,17 @@ namespace GraphicEditor.View
                 { DrawingToolType.Rectangle, new RectangleFigure() },
                 { DrawingToolType.Ellipse, new EllipseFigure() },
             };
+
+            thicknessValues = new List<ThicknessValue>()
+            {
+                new ThicknessValue(1),
+                new ThicknessValue(3),
+                new ThicknessValue(5),
+                new ThicknessValue(7)
+            };
+
+            thicknessToolStripComboBox.Items.AddRange(thicknessValues.ToArray());
+            thicknessToolStripComboBox.SelectedIndex = 0;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -220,8 +231,10 @@ namespace GraphicEditor.View
         {
             if (sender is ToolStripComboBox cb)
             {
-                if (drawingSheet != null)
-                    drawingSheet.DrawingData.Thickness = cb.SelectedIndex * 2 + 1;
+                if (drawingSheet != null && cb.SelectedItem is ThicknessValue v)
+                {
+                    drawingSheet.DrawingData.Thickness = v.Value;
+                }
             }
         }
 
@@ -235,6 +248,9 @@ namespace GraphicEditor.View
 
                     if (selectedTool == null)
                         throw new NullReferenceException();
+
+                    if (drawingSheet.SelectedTool.Executing)
+                        drawingSheet.StopDrawing();
 
                     drawingSheet.SelectedTool = selectedTool;
                     btn.Checked = true;
@@ -269,6 +285,15 @@ namespace GraphicEditor.View
         private void clearToolStripButton_Click(object sender, EventArgs e)
         {
             drawingSheet.Clear();
+        }
+
+        private void fillFigureToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (sender is ToolStripButton btn)
+            {
+                btn.Checked = !btn.Checked;
+                drawingSheet.DrawingData.IsColored = btn.Checked;
+            }
         }
     }
 }

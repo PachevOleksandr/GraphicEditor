@@ -26,10 +26,15 @@ namespace GraphicEditor.View.Tools.Figures
             using (var graphic = Graphics.FromImage(data.Image))
             {
                 graphic.DrawImage(startState, 0, 0);
-                DrawFigure(data, graphic);
+
+                if (data.IsColored)
+                    FillFigure(data, graphic);
+                else
+                    DrawFigure(data, graphic);
             }
         }
 
         abstract protected void DrawFigure(DrawingToolData data, Graphics graphics);
+        abstract protected void FillFigure(DrawingToolData data, Graphics graphics);
     }
 }
