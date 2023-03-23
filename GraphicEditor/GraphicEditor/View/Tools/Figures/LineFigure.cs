@@ -14,10 +14,5 @@ namespace GraphicEditor.View.Tools.Figures
 
             graphics.DrawLine(pen, data.StartPoint, data.EndPoint);
         }
-
-        protected override void FillFigure(DrawingToolData data, Graphics graphics)
-        {
-            DrawFigure(data, graphics);
-        }
     }
 }

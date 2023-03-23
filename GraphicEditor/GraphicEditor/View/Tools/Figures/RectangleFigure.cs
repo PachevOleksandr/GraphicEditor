@@ -10,22 +10,25 @@ namespace GraphicEditor.View.Tools.Figures
     {
         protected override void DrawFigure(DrawingToolData data, Graphics graphics)
         {
-            var pen = new Pen(data.ForegroundColor, data.Thickness);
+            var location = data.StartPoint;
 
-            var size = new Size(data.EndPoint.X - data.StartPoint.X, data.EndPoint.Y - data.StartPoint.Y);
+            if (data.StartPoint.Y > data.EndPoint.Y ||
+               data.StartPoint.X > data.EndPoint.X)
+            {
+                location = data.EndPoint;
+            }
 
-            graphics.DrawRectangle(pen, new Rectangle(data.StartPoint, size));
-        }
-
-        protected override void FillFigure(DrawingToolData data, Graphics graphics)
-        {
             var foregroundPen = new Pen(data.ForegroundColor, data.Thickness);
-            var backgroundPen = new Pen(data.BackgroundColor, data.Thickness);
 
-            var size = new Size(data.EndPoint.X - data.StartPoint.X, data.EndPoint.Y - data.StartPoint.Y);
+            var size = new Size(Math.Abs(data.EndPoint.X - data.StartPoint.X), Math.Abs(data.EndPoint.Y - data.StartPoint.Y));
 
-            graphics.FillRectangle(backgroundPen.Brush, new Rectangle(data.StartPoint, size));
-            graphics.DrawRectangle(foregroundPen, new Rectangle(data.StartPoint, size));
+            if(data.IsColored)
+            {
+                var backgroundPen = new Pen(data.BackgroundColor, data.Thickness);
+                graphics.FillRectangle(backgroundPen.Brush, new Rectangle(location, size));
+            }
+
+            graphics.DrawRectangle(foregroundPen, new Rectangle(location, size));
         }
     }
 }

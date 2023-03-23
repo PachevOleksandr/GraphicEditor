@@ -201,6 +201,20 @@ namespace GraphicEditor.View
             }
         }
 
+        private void clearToolStripButton_Click(object sender, EventArgs e)
+        {
+            drawingSheet.Clear();
+        }
+
+        private void fillFigureToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (sender is ToolStripButton btn)
+            {
+                btn.Checked = !btn.Checked;
+                drawingSheet.DrawingData.IsColored = btn.Checked;
+            }
+        }
+
         #endregion
 
         #region Drawing tool settings
@@ -281,19 +295,5 @@ namespace GraphicEditor.View
         }
 
         #endregion
-
-        private void clearToolStripButton_Click(object sender, EventArgs e)
-        {
-            drawingSheet.Clear();
-        }
-
-        private void fillFigureToolStripButton_Click(object sender, EventArgs e)
-        {
-            if (sender is ToolStripButton btn)
-            {
-                btn.Checked = !btn.Checked;
-                drawingSheet.DrawingData.IsColored = btn.Checked;
-            }
-        }
     }
 }
