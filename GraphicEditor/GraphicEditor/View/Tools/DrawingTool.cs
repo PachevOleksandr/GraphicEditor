@@ -24,6 +24,9 @@ namespace GraphicEditor.View.Tools
 
         public virtual void FinishDrawing(DrawingToolData data)
         {
+            if (!Executing)
+                return;
+
             Executing = false;
         }
 

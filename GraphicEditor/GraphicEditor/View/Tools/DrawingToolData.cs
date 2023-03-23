@@ -20,7 +20,7 @@ namespace GraphicEditor.View.Tools
         public bool IsColored { get; set; }
 
         public float FontSize { get; set; }
-        public Font? Font { get; set; }
+        public Font Font { get; set; }
 
         public DrawingToolData()
         {

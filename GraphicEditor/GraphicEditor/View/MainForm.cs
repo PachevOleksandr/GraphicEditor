@@ -27,6 +27,8 @@ namespace GraphicEditor.View
         {
             InitializeComponent();
 
+            resizablePanel.Resized += drawingArea_SizeChanged;
+
             drawingArea = new PictureBox()
             {
                 Dock = DockStyle.Fill,
@@ -36,7 +38,6 @@ namespace GraphicEditor.View
             drawingArea.MouseDown += drawingArea_MouseDown;
             drawingArea.MouseMove += drawingArea_MouseMove;
             drawingArea.MouseUp += drawingArea_MouseUp;
-            drawingArea.SizeChanged += drawingArea_SizeChanged;
 #pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
 
             resizablePanel.Controls.Add(drawingArea);
@@ -112,10 +113,13 @@ namespace GraphicEditor.View
 
         private void drawingArea_SizeChanged(object sender, EventArgs e)
         {
-            if (sender is PictureBox pb)
+            if (sender is ResizablePanel rp)
             {
-                imageSizeInfoLabel.Text = $"Size: {pb.Width} x {pb.Height}";
-                drawingSheet?.Resize(pb.Width, pb.Height);
+                int sheetWidth = rp.Width - rp.Padding.Left - rp.Padding.Right;
+                int sheetHeight = rp.Height - rp.Padding.Top - rp.Padding.Bottom;
+
+                imageSizeInfoLabel.Text = $"Size: {sheetWidth} x {sheetHeight}";
+                drawingSheet?.Resize(sheetWidth, sheetHeight);
             }
         }
 
