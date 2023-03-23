@@ -29,40 +29,25 @@ namespace GraphicEditor.View
             }
         }
 
-        public int Width
-        {
-            get => Image.Width;
-        }
-
-        public int Height
-        {
-            get => Image.Height;
-        }
-
         public IDrawingTool SelectedTool { get; set; }
         public History<Image> ImageHistory { get; private set; }
 
-        public DrawingSheet(DrawingToolData data, int width, int height)
+        public DrawingSheet(DrawingToolData data)
         {
             DrawingData = data;
+            ImageHistory = new History<Image>();
+        }
 
+        public DrawingSheet(DrawingToolData data, int width, int height) : this(data)
+        {
             Image = GetEmptyImage(width, height);
-
-            Initialize();
+            ImageHistory.AddItem(Image.Clone() as Image);
         }
 
-        public DrawingSheet(DrawingToolData data, Image image)
+        public DrawingSheet(DrawingToolData data, Image image) : this(data)
         {
-            DrawingData = data;
-
             Image = image;
-
-            Initialize();
-        }
-
-        public void Initialize()
-        {
-            ImageHistory = new History<Image>(Image.Clone() as Image);
+            ImageHistory.AddItem(Image.Clone() as Image);
         }
 
         private Image GetEmptyImage(int width, int height)
@@ -84,7 +69,7 @@ namespace GraphicEditor.View
                 graphics.Clear(DrawingData.BackgroundColor);
             }
 
-            ImageHistory.Clear(Image.Clone() as Image);
+            ImageHistory.Clear();
             ImageChanged?.Invoke(this, Image);
         }
 
