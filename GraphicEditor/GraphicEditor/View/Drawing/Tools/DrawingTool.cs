@@ -1,10 +1,11 @@
-﻿using System;
+﻿using GraphicEditor.View.Drawing.Tools.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraphicEditor.View.Tools
+namespace GraphicEditor.View.Drawing.Tools
 {
     internal abstract class DrawingTool : IDrawingTool
     {
@@ -20,7 +21,11 @@ namespace GraphicEditor.View.Tools
             previousImageState = data.Image.Clone() as Image;
         }
 
-        public abstract void DrawNext(DrawingToolData data);
+        public virtual void DrawNext(DrawingToolData data)
+        {
+            if (!Executing)
+                return;
+        }
 
         public virtual void FinishDrawing(DrawingToolData data)
         {

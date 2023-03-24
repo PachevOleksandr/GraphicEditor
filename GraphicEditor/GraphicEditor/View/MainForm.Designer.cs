@@ -1,4 +1,5 @@
 ﻿using GraphicEditor.View.Controls;
+using GraphicEditor.View.Drawing.Tools;
 
 namespace GraphicEditor.View
 {
@@ -145,7 +146,7 @@ namespace GraphicEditor.View
             textToolStripToolButton.Name = "textToolStripToolButton";
             textToolStripToolButton.Size = new Size(23, 22);
             textToolStripToolButton.Text = "toolStripButton1";
-            textToolStripToolButton.Tool = Tools.DrawingToolType.TextInput;
+            textToolStripToolButton.Tool = DrawingToolType.TextInput;
             textToolStripToolButton.ToolTipText = "Text";
             textToolStripToolButton.Click += drawingTool_ToolStripButton_Click;
             // 
@@ -177,7 +178,7 @@ namespace GraphicEditor.View
             lineToolStripToolButton.Name = "lineToolStripToolButton";
             lineToolStripToolButton.Size = new Size(23, 22);
             lineToolStripToolButton.Text = "toolStripButton1";
-            lineToolStripToolButton.Tool = Tools.DrawingToolType.Line;
+            lineToolStripToolButton.Tool = DrawingToolType.Line;
             lineToolStripToolButton.ToolTipText = "Line";
             lineToolStripToolButton.Click += drawingTool_ToolStripButton_Click;
             // 
@@ -190,7 +191,7 @@ namespace GraphicEditor.View
             rectangleToolStripToolButton.Name = "rectangleToolStripToolButton";
             rectangleToolStripToolButton.Size = new Size(23, 22);
             rectangleToolStripToolButton.Text = "toolStripButton1";
-            rectangleToolStripToolButton.Tool = Tools.DrawingToolType.Rectangle;
+            rectangleToolStripToolButton.Tool = DrawingToolType.Rectangle;
             rectangleToolStripToolButton.ToolTipText = "Rectangle";
             rectangleToolStripToolButton.Click += drawingTool_ToolStripButton_Click;
             // 
@@ -203,7 +204,7 @@ namespace GraphicEditor.View
             ellipseToolStripToolButton.Name = "ellipseToolStripToolButton";
             ellipseToolStripToolButton.Size = new Size(23, 22);
             ellipseToolStripToolButton.Text = "toolStripButton1";
-            ellipseToolStripToolButton.Tool = Tools.DrawingToolType.Ellipse;
+            ellipseToolStripToolButton.Tool = DrawingToolType.Ellipse;
             ellipseToolStripToolButton.ToolTipText = "Ellipse";
             ellipseToolStripToolButton.Click += drawingTool_ToolStripButton_Click;
             // 

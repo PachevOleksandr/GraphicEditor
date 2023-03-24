@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GraphicEditor.View.Drawing.Tools.Input;
 
-namespace GraphicEditor.View.Tools.Figures
+namespace GraphicEditor.View.Drawing.Tools.Figures
 {
     internal class RectangleFigure : Figure
     {
@@ -22,7 +18,7 @@ namespace GraphicEditor.View.Tools.Figures
 
             var size = new Size(Math.Abs(data.EndPoint.X - data.StartPoint.X), Math.Abs(data.EndPoint.Y - data.StartPoint.Y));
 
-            if(data.IsColored)
+            if (data.IsColored)
             {
                 var backgroundPen = new Pen(data.BackgroundColor, data.Thickness);
                 graphics.FillRectangle(backgroundPen.Brush, new Rectangle(location, size));

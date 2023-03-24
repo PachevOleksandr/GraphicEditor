@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraphicEditor.View.Tools
+namespace GraphicEditor.View.Drawing.Tools.Input
 {
     internal class ThicknessValue
     {

@@ -1,19 +1,10 @@
-﻿using GraphicEditor.Model;
-using GraphicEditor.View.Tools;
-using GraphicEditor.View.Tools.ClassicalTools;
-using GraphicEditor.View.Tools.Figures;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using GraphicEditor.Helpers;
+using GraphicEditor.View.Drawing.Tools;
+using GraphicEditor.View.Drawing.Tools.Input;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace GraphicEditor.View
+namespace GraphicEditor.View.Drawing
 {
     internal class DrawingSheet
     {

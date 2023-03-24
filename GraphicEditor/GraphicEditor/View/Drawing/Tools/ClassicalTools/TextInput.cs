@@ -1,14 +1,7 @@
 ﻿using GraphicEditor.View.Controls;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using GraphicEditor.View.Drawing.Tools.Input;
 
-namespace GraphicEditor.View.Tools.ClassicalTools
+namespace GraphicEditor.View.Drawing.Tools.ClassicalTools
 {
     internal class TextInput : DrawingTool
     {

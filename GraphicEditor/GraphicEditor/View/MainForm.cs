@@ -1,17 +1,10 @@
-﻿using GraphicEditor.Model;
-using GraphicEditor.View.Controls;
-using GraphicEditor.View.Tools;
-using GraphicEditor.View.Tools.ClassicalTools;
-using GraphicEditor.View.Tools.Figures;
-using System;
-using System.Collections.Generic;
+﻿using GraphicEditor.View.Controls;
+using GraphicEditor.View.Drawing;
+using GraphicEditor.View.Drawing.Tools;
+using GraphicEditor.View.Drawing.Tools.ClassicalTools;
+using GraphicEditor.View.Drawing.Tools.Figures;
+using GraphicEditor.View.Drawing.Tools.Input;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace GraphicEditor.View
 {

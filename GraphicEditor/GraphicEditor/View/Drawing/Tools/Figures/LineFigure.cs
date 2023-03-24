@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GraphicEditor.View.Drawing.Tools.Input;
 
-namespace GraphicEditor.View.Tools.Figures
+namespace GraphicEditor.View.Drawing.Tools.Figures
 {
     internal class LineFigure : Figure
     {
