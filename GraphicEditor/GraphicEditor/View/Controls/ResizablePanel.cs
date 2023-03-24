@@ -86,6 +86,18 @@ namespace GraphicEditor.View.Controls
             }
         }
 
+        public int ContentWidth
+        {
+            get => Width - Padding.Left - Padding.Right;
+            set => Width = value + Padding.Right + Padding.Left;
+        }
+
+        public int ContentHeight
+        {
+            get => Height - Padding.Top - Padding.Bottom;
+            set => Height = value + Padding.Top + Padding.Bottom;
+        }
+
         public ResizablePanel()
         {
             InitializeComponent();

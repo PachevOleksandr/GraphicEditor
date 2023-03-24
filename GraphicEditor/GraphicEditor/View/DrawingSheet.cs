@@ -32,25 +32,36 @@ namespace GraphicEditor.View
             }
         }
 
-        public IDrawingTool SelectedTool { get; set; }
+        private IDrawingTool selectedTool;
+        public IDrawingTool SelectedTool
+        {
+            get => selectedTool;
+            set
+            {
+                if (value != null)
+                {
+                    selectedTool = value;
+                }
+            }
+        }
+
         public History<Image> ImageHistory { get; private set; }
 
-        public DrawingSheet(DrawingToolData data)
+        public DrawingSheet()
         {
-            DrawingData = data;
-            ImageHistory = new History<Image>();
+            DrawingData = new DrawingToolData();
         }
 
-        public DrawingSheet(DrawingToolData data, int width, int height) : this(data)
+        public DrawingSheet(int width, int height) : this()
         {
             Image = GetEmptyImage(width, height);
-            ImageHistory.AddItem(Image.Clone() as Image);
+            ImageHistory = new History<Image>(Image.Clone() as Image);
         }
 
-        public DrawingSheet(DrawingToolData data, Image image) : this(data)
+        public DrawingSheet(Image image) : this()
         {
             Image = image;
-            ImageHistory.AddItem(Image.Clone() as Image);
+            ImageHistory = new History<Image>(Image.Clone() as Image);
         }
 
         private Image GetEmptyImage(int width, int height)
@@ -72,8 +83,18 @@ namespace GraphicEditor.View
                 graphics.Clear(DrawingData.BackgroundColor);
             }
 
-            ImageHistory.Clear();
+            ImageHistory.Reset();
             ImageChanged?.Invoke(this, Image);
+        }
+
+        private void ResetHistory(Image image)
+        {
+            ImageHistory = new(image.Clone() as Image);
+        }
+
+        public void AddToHistory(Image image)
+        {
+            ImageHistory.AddItem(image.Clone() as Image);
         }
 
         public void SaveImageToFile(string filePath)
@@ -84,16 +105,9 @@ namespace GraphicEditor.View
         public void LoadImageFromFile(string filePath)
         {
             var newImage = Image.FromFile(filePath);
-            var tmpBmp = new Bitmap(newImage.Width, newImage.Height);
+            Image = new Bitmap(newImage, newImage.Width, newImage.Height);
 
-            using (var graphic = Graphics.FromImage(tmpBmp))
-            {
-                graphic.Clear(DrawingData.BackgroundColor);
-                graphic.DrawImage(newImage, 0, 0);
-            }
-
-            Image = tmpBmp;
-            ImageChanged?.Invoke(this, Image);
+            ResetHistory(Image);
         }
 
         public void Resize(int width, int height)
@@ -107,7 +121,7 @@ namespace GraphicEditor.View
             }
 
             Image = newImg;
-            ImageHistory.AddItem(Image.Clone() as Image);
+            AddToHistory(Image);
         }
 
         public Image InvertImage(Action<int> notifyPercentageChanged, Image image)
@@ -168,7 +182,9 @@ namespace GraphicEditor.View
         public void StopDrawing()
         {
             SelectedTool.FinishDrawing(DrawingData);
-            ImageHistory.AddItem(Image.Clone() as Image);
+            ImageChanged?.Invoke(this, Image);
+
+            AddToHistory(Image);
         }
 
         #endregion

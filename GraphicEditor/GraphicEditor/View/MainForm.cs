@@ -29,6 +29,15 @@ namespace GraphicEditor.View
         {
             InitializeComponent();
 
+            // Color buttons
+            foregroundColorButton.Image = GetColorButtonImage(foregroundColorButton.Width, foregroundColorButton.Height, foregroundColorDialog.Color);
+            backgroundColorButton.Image = GetColorButtonImage(backgroundColorButton.Width, backgroundColorButton.Height, backgroundColorDialog.Color);
+
+            // Inversion
+            inversionBackgroundWorker.ProgressChanged += InversionBackgroundWorker_ProgressChanged;
+            inversionBackgroundWorker.RunWorkerCompleted += InversionBackgroundWorker_RunWorkerCompleted;
+            inversionBackgroundWorker.DoWork += InversionBackgroundWorker_DoWork;
+
 #pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
             resizablePanel.Resized += drawingArea_SizeChanged;
 #pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
@@ -46,6 +55,9 @@ namespace GraphicEditor.View
 
             resizablePanel.Controls.Add(drawingArea);
 
+            imageSizeInfoLabel.Text = $"Size: {resizablePanel.ContentWidth} x {resizablePanel.ContentHeight}";
+
+            // Drawing tools initialization
             tools = new()
             {
                 { DrawingToolType.Pencil, new Pencil() },
@@ -55,6 +67,7 @@ namespace GraphicEditor.View
                 { DrawingToolType.Ellipse, new EllipseFigure() },
             };
 
+            // Thickness combobox
             thicknessValues = new List<ThicknessValue>()
             {
                 new ThicknessValue(1),
@@ -66,33 +79,18 @@ namespace GraphicEditor.View
             thicknessToolStripComboBox.Items.AddRange(thicknessValues.ToArray());
             thicknessToolStripComboBox.SelectedIndex = 0;
 
-            inversionBackgroundWorker.ProgressChanged += InversionBackgroundWorker_ProgressChanged;
-            inversionBackgroundWorker.RunWorkerCompleted += InversionBackgroundWorker_RunWorkerCompleted;
-            inversionBackgroundWorker.DoWork += InversionBackgroundWorker_DoWork;
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            var data = new DrawingToolData
-            {
-                ForegroundColor = foregroundColorDialog.Color,
-                BackgroundColor = backgroundColorDialog.Color,
-                Thickness = thicknessToolStripComboBox.SelectedIndex * 2 + 1
-            };
-
-            drawingSheet = new(data, resizablePanel.Width - 4, resizablePanel.Height - 4);
+            // Drawing sheet initialization
+            drawingSheet = new(resizablePanel.ContentWidth, resizablePanel.ContentHeight);
             drawingSheet.ImageChanged += DrawingSheet_ImageChanged;
-            drawingSheet.SelectedTool = tools.First().Value;
+
+            // Selecting default drawing tool
+            drawingSheet.SelectedTool = tools[DrawingToolType.Pencil];
+            pencilToolStripButton.Checked = true;
 
             drawingArea.Image = drawingSheet.Image;
-
-            foregroundColorButton.Image = GetMonoImage(foregroundColorButton.Width, foregroundColorButton.Height, drawingSheet.DrawingData.ForegroundColor);
-            backgroundColorButton.Image = GetMonoImage(backgroundColorButton.Width, backgroundColorButton.Height, drawingSheet.DrawingData.BackgroundColor);
         }
 
-        private Image GetMonoImage(int width, int height, Color color)
+        private Image GetColorButtonImage(int width, int height, Color color)
         {
             var image = new Bitmap(width, height);
 
@@ -112,8 +110,8 @@ namespace GraphicEditor.View
 
         private void DrawingSheet_ImageChanged(object sender, Image image)
         {
-            resizablePanel.Width = image.Width + resizablePanel.Padding.Right + resizablePanel.Padding.Left;
-            resizablePanel.Height = image.Height + resizablePanel.Padding.Top + resizablePanel.Padding.Bottom;
+            resizablePanel.ContentWidth = image.Width;
+            resizablePanel.ContentHeight = image.Height;
 
             drawingArea.Image = image;
         }
@@ -147,8 +145,7 @@ namespace GraphicEditor.View
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            saveFileDialog.Filter = "Default image files|*.bmp|" +
-                                    "Pictures|*.png;";
+            saveFileDialog.Filter = "Default image files|*.bmp";
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 drawingSheet.SaveImageToFile(saveFileDialog.FileName);
@@ -161,11 +158,8 @@ namespace GraphicEditor.View
         {
             if (sender is ResizablePanel rp)
             {
-                int sheetWidth = rp.Width - rp.Padding.Left - rp.Padding.Right;
-                int sheetHeight = rp.Height - rp.Padding.Top - rp.Padding.Bottom;
-
-                imageSizeInfoLabel.Text = $"Size: {sheetWidth} x {sheetHeight}";
-                drawingSheet?.Resize(sheetWidth, sheetHeight);
+                imageSizeInfoLabel.Text = $"Size: {rp.ContentWidth} x {rp.ContentHeight}";
+                drawingSheet?.Resize(rp.ContentWidth, rp.ContentHeight);
             }
         }
 
@@ -230,7 +224,7 @@ namespace GraphicEditor.View
             if (foregroundColorDialog.ShowDialog() == DialogResult.OK)
             {
                 drawingSheet.DrawingData.ForegroundColor = foregroundColorDialog.Color;
-                btn.Image = GetMonoImage(btn.Width, btn.Height, foregroundColorDialog.Color);
+                btn.Image = GetColorButtonImage(btn.Width, btn.Height, foregroundColorDialog.Color);
             }
         }
 
@@ -241,7 +235,7 @@ namespace GraphicEditor.View
             if (backgroundColorDialog.ShowDialog() == DialogResult.OK)
             {
                 drawingSheet.DrawingData.BackgroundColor = backgroundColorDialog.Color;
-                btn.Image = GetMonoImage(btn.Width, btn.Height, backgroundColorDialog.Color);
+                btn.Image = GetColorButtonImage(btn.Width, btn.Height, backgroundColorDialog.Color);
             }
         }
 
@@ -302,7 +296,7 @@ namespace GraphicEditor.View
 
         #region Inversion
 
-        private Image invertedImage;
+        private Image? invertedImage;
 
         private void invertToolStripButton_Click(object sender, EventArgs e)
         {
@@ -318,8 +312,12 @@ namespace GraphicEditor.View
         private void InversionBackgroundWorker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
         {
             disableDrawingPanel.Hide();
-            drawingSheet.Image = invertedImage;
-            drawingSheet.ImageHistory.AddItem(invertedImage.Clone() as Image);
+
+            if (invertedImage != null)
+            {
+                drawingSheet.Image = invertedImage;
+                drawingSheet.AddToHistory(invertedImage);
+            }
         }
 
         private void InversionBackgroundWorker_ProgressChanged(object? sender, ProgressChangedEventArgs e)

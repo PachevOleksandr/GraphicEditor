@@ -11,10 +11,12 @@ namespace GraphicEditor.Model
         private readonly Stack<T> undoStack;
         private readonly Stack<T> redoStack;
 
-        public History()
+        public History(T firstElement)
         {
             undoStack = new Stack<T>();
             redoStack = new Stack<T>();
+
+            undoStack.Push(firstElement);
         }
 
         public bool CanUndo()
@@ -55,9 +57,13 @@ namespace GraphicEditor.Model
             undoStack.Push(item);
         }
 
-        public void Clear()
+        public void Reset()
         {
-            undoStack.Clear();
+            while (CanUndo())
+            {
+                undoStack.Pop();
+            }
+
             redoStack.Clear();
         }
     }

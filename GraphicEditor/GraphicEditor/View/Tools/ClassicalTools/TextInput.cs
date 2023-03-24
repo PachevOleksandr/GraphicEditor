@@ -12,14 +12,21 @@ namespace GraphicEditor.View.Tools.ClassicalTools
 {
     internal class TextInput : DrawingTool
     {
-        private readonly PictureBox pictureBox;
         private TransparentTextBox textBox;
 
         public string Text => textBox.Text;
 
         public TextInput(PictureBox pictureBox)
         {
-            this.pictureBox = pictureBox;
+            textBox = new TransparentTextBox
+            {
+                Parent = pictureBox,
+                Multiline = true,
+                AutoSize = true,
+                BorderStyle = BorderStyle.None,
+                Visible = false
+            };
+            textBox.TextChanged += TextBox_TextChanged;
 
             DrawFinishType = DrawFinishType.OnUnselect;
         }
@@ -28,17 +35,11 @@ namespace GraphicEditor.View.Tools.ClassicalTools
         {
             base.StartDrawing(data);
 
-            textBox = new TransparentTextBox();
-            textBox.Parent = pictureBox;
-            textBox.Multiline = true;
-            textBox.AutoSize = true;
-            textBox.BorderStyle = BorderStyle.None;
             textBox.Location = data.StartPoint;
             textBox.Font = data.Font;
             textBox.ForeColor = data.ForegroundColor;
+            textBox.Text = string.Empty;
             textBox.Size = TextRenderer.MeasureText(" ", textBox.Font);
-
-            textBox.TextChanged += TextBox_TextChanged;
 
             textBox.Show();
             textBox.Focus();
@@ -65,7 +66,6 @@ namespace GraphicEditor.View.Tools.ClassicalTools
                 graphic.DrawString(Text, data.Font, pen.Brush, data.StartPoint);
             }
 
-            textBox.IsAccessible = false;
             textBox.Hide();
         }
     }
